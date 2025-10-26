@@ -196,9 +196,9 @@ python scripts/validate_project.py
 ============================================================
 PROJECT STRUCTURE VALIDATION
 ============================================================
-? README.md
-? docker-compose.yml
-? .gitignore
+[OK] README.md
+[OK] docker-compose.yml
+[OK] .gitignore
 ...
 ============================================================
 VALIDATION SUMMARY
