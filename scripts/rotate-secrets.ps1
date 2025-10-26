@@ -108,7 +108,7 @@ function Update-ClientSecret {
             -Headers $headers `
        -Body $body | Out-Null
    
-    Write-Host "? Secret updated for $ClientId" -ForegroundColor Green
+    Write-Host "COMPLETE: Secret updated for $ClientId" -ForegroundColor Green
     }
     catch {
 Write-Host "Failed to update secret" -ForegroundColor Red

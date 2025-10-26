@@ -18,14 +18,14 @@ This document explains the security measures implemented in the Keycloak configu
 - `standardFlowEnabled: true` - Supports authorization code flow
 
 **Security Features:**
-- ? **Client Secret Required:** `gateway-secret-change-in-production`
-- ? **Restricted Redirect URIs:** Only localhost:8080 allowed
-- ? **Restricted Web Origins:** Only localhost:8080 allowed
+- **Client Secret Required:** `gateway-secret-change-in-production`
+- **Restricted Redirect URIs:** Only localhost:8080 allowed
+- **Restricted Web Origins:** Only localhost:8080 allowed
 
 **How it works:**
 ```
-User ? API Gateway ? Keycloak (with client_id + client_secret)
-     ? JWT Token ?
+User -> API Gateway -> Keycloak (with client_id + client_secret)
+     -> JWT Token
 ```
 
 ---
@@ -39,15 +39,15 @@ User ? API Gateway ? Keycloak (with client_id + client_secret)
 - `serviceAccountsEnabled: true` - Can authenticate itself for service-to-service calls
 
 **Security Features:**
-- ? **Client Secret Required:** `customer-service-secret-change-in-production`
-- ? **No redirect URIs:** Cannot be used for login flows
-- ? **Bearer-only mode:** Only accepts pre-issued tokens
+- **Client Secret Required:** `customer-service-secret-change-in-production`
+- **No redirect URIs:** Cannot be used for login flows
+- **Bearer-only mode:** Only accepts pre-issued tokens
 
 **How it works:**
 ```
-Request + JWT ? Customer Service ? Validates JWT signature & claims
-  ? Checks if token is not expired
-            ? Processes request if valid
+Request + JWT -> Customer Service -> Validates JWT signature & claims
+  -> Checks if token is not expired
+            -> Processes request if valid
 ```
 
 ---
@@ -61,9 +61,9 @@ Request + JWT ? Customer Service ? Validates JWT signature & claims
 - `publicClient: false`
 
 **Security Features:**
-- ? **Client Secret Required:** `product-service-secret-change-in-production`
-- ? **No redirect URIs:** Cannot be used for login flows
-- ? **Bearer-only mode:** Only accepts pre-issued tokens
+- **Client Secret Required:** `product-service-secret-change-in-production`
+- **No redirect URIs:** Cannot be used for login flows
+- **Bearer-only mode:** Only accepts pre-issued tokens
 
 ---
 
@@ -76,9 +76,9 @@ Request + JWT ? Customer Service ? Validates JWT signature & claims
 - Supports PKCE for added security
 
 **Security Warnings:**
-- ?? **NO SECRET REQUIRED** - Anyone can use this client
-- ?? **DISABLE IN PRODUCTION!**
-- ?? **Wildcard redirects for localhost only**
+- **NO SECRET REQUIRED** - Anyone can use this client
+- **DISABLE IN PRODUCTION!**
+- **Wildcard redirects for localhost only**
 
 **Why it exists:**
 ```bash
@@ -96,7 +96,7 @@ curl -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connec
 
 ## Security Concerns Addressed
 
-### ? Previous Issues (FIXED)
+### Previous Issues (FIXED)
 
 #### 1. Missing Client Secrets
 **Before:**
@@ -201,12 +201,12 @@ curl -X POST http://keycloak:8080/realms/api-gateway-poc/protocol/openid-connect
 ## Preventing Spoofing Attacks
 
 ### Attack 1: Client Impersonation
-**Before:** ? Anyone could claim to be `api-gateway`
+**Before:** Anyone could claim to be `api-gateway`
 ```bash
 curl -d "client_id=api-gateway" ...  # No secret needed!
 ```
 
-**After:** ? Must prove identity with secret
+**After:** Must prove identity with secret
 ```bash
 curl -d "client_id=api-gateway" \
      -d "client_secret=gateway-secret-change-in-production" ...
@@ -215,12 +215,12 @@ curl -d "client_id=api-gateway" \
 ---
 
 ### Attack 2: Redirect URI Hijacking
-**Before:** ? Tokens could be sent to attacker's domain
+**Before:** Tokens could be sent to attacker's domain
 ```
 https://keycloak/auth?redirect_uri=https://evil.com/steal
 ```
 
-**After:** ? Only whitelisted URIs accepted
+**After:** Only whitelisted URIs accepted
 ```
 https://keycloak/auth?redirect_uri=http://localhost:8080/callback  # OK
 https://keycloak/auth?redirect_uri=https://evil.com/steal          # REJECTED
@@ -229,12 +229,12 @@ https://keycloak/auth?redirect_uri=https://evil.com/steal          # REJECTED
 ---
 
 ### Attack 3: Internal Network Access
-**Before:** ? Direct service access with no authentication
+**Before:** Direct service access with no authentication
 ```bash
 curl http://customer-service:8001/customers  # No auth!
 ```
 
-**After:** ? Services validate JWT tokens
+**After:** Services validate JWT tokens
 - Envoy gateway enforces JWT validation
 - Direct service access requires valid token
 - Network isolation provides defense in depth
@@ -335,7 +335,7 @@ docker-compose.yml:
 
 2. **Update in Keycloak:**
    - Login to Admin Console (http://localhost:8180)
-   - Navigate to: Clients ? api-gateway ? Credentials
+   - Navigate to: Clients -> api-gateway -> Credentials
    - Click "Regenerate Secret" or enter new secret
 
 3. **Update in services:**
@@ -353,32 +353,45 @@ docker-compose.yml:
 ## Network Security
 
 ### Current Setup (Docker Network)
+
 ```
-???????????????????????????????????????
-?   Docker Network: microservices    ?
-?         ?
-?  ????????????  ?????????????????? ?
-?  ? Gateway  ?? ? customer-svc   ? ?
-?  ????????????  ?????????????????? ?
-?  ?         ?????????????????? ?
-?  ????????????  ? product-svc    ? ?
-?  ? Keycloak ?  ?????????????????? ?
-?  ????????????   ?
-???????????????????????????????????????
-         ?
-    (Port 8080, 8180)
-    Internet
++------------------------------------------+
+|   Docker Network: microservices          |
+|                                          |
+|  +----------+    +------------------+    |
+|  | Gateway  |--->| Customer Service |    |
+|  | (Envoy)  |    |  Port 8001       |    |
+|  +----------+    +------------------+    |
+|       |                                  |
+|       v          +------------------+    |
+|  +----------+    | Product Service  |    |
+|  | Keycloak |    |  Port 8002       |    |
+|  |Port 8180 |    +------------------+    |
+|  +----------+                            |
++------------------------------------------+
+       |
+       v
+       Internet Access
+    (Ports 8080, 8180 exposed)
 ```
 
+**Network Flow:**
+1. **External Access**: Only Gateway (8080) and Keycloak (8180) exposed
+2. **Internal Communication**: Services communicate within Docker network
+3. **Authentication**: All requests validated via Keycloak JWT tokens
+4. **Isolation**: Microservices not directly accessible from internet
+
 **Security:**
-- ? Services isolated in Docker network
-- ? Only gateway exposed to internet
-- ? Internal service-to-service communication
+- Services isolated in Docker network
+- Only gateway exposed to internet
+- Internal service-to-service communication secured
+- JWT validation at gateway level
 
 **Additional Recommendations:**
 - Use separate networks for different security zones
 - Enable Docker network encryption
 - Implement service mesh (Istio/Linkerd) for mTLS
+- Consider network policies for additional isolation
 
 ---
 
@@ -435,17 +448,17 @@ https://keycloak/auth?client_id=api-gateway&redirect_uri=http://localhost:8080/c
 ## Summary
 
 ### What Changed?
-1. ? **Client secrets added** to all confidential clients
-2. ? **Redirect URIs restricted** to specific allowed URLs
-3. ? **Web origins restricted** to prevent CORS attacks
-4. ? **Service-to-service authentication** now possible
-5. ? **Test client properly marked** as development-only
+1. **Client secrets added** to all confidential clients
+2. **Redirect URIs restricted** to specific allowed URLs
+3. **Web origins restricted** to prevent CORS attacks
+4. **Service-to-service authentication** now possible
+5. **Test client properly marked** as development-only
 
 ### What's Protected?
-1. ? **Client impersonation** - Requires secrets
-2. ? **Redirect hijacking** - Whitelisted URIs only
-3. ? **Token theft** - Proper origin validation
-4. ? **Unauthorized access** - JWT validation enforced
+1. **Client impersonation** - Requires secrets
+2. **Redirect hijacking** - Whitelisted URIs only
+3. **Token theft** - Proper origin validation
+4. **Unauthorized access** - JWT validation enforced
 
 ### What's Next?
 1. Review and change all client secrets

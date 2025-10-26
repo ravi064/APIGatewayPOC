@@ -17,11 +17,14 @@ Complete documentation for the API Gateway Proof of Concept.
 - [Quick Reference](development/quick-reference.md) - Common commands and workflows
 - [Scripts Documentation](../scripts/README.md) - Utility scripts guide
 
+### API Documentation
+- [API Documentation](api/README.md) - Auto-generated API documentation for all services
+- [API Generation Guide](api/API_GENERATION_GUIDE.md) - How to generate API docs
+- [Customer Service API](api/customer-service.md) - Customer service endpoints
+- [Product Service API](api/product-service.md) - Product service endpoints
+
 ### Architecture
 Documentation for system architecture (coming soon)
-
-### API Reference
-Documentation for service APIs (coming soon)
 
 ### Operations
 Documentation for deployment and operations (coming soon)
@@ -29,6 +32,7 @@ Documentation for deployment and operations (coming soon)
 ### Reports
 - [Project Status](../reports/project-status.md) - Current project status
 - [Verification Report](../reports/verification-report.md) - Validation results
+- [Restructuring Summary](../reports/RESTRUCTURING_SUMMARY.md) - Documentation reorganization details
 
 ## Quick Find
 
@@ -36,11 +40,14 @@ Documentation for deployment and operations (coming soon)
 - [Start services](development/quick-reference.md#start-services)
 - [Get access token](security/quick-reference.md#authentication-examples)
 - [Rotate secrets](../scripts/README.md#secret-rotation-workflow)
+- [Generate API docs](api/API_GENERATION_GUIDE.md#quick-start)
+- [Validate project](../scripts/validate_project.py) - Project validation tool
 
 **By Role:**
 - **New Developers**: Start with [Quick Start](../QUICK_START.md)
 - **Security Team**: See [Security Guide](security/security-guide.md)
-- **API Users**: Check service READMEs in [services/](../services/)
+- **API Users**: Browse [API Documentation](api/README.md)
+- **DevOps**: Check service READMEs in [services/](../services/)
 
 ## Contributing to Docs
 

@@ -6,7 +6,42 @@ This directory contains utility scripts for managing the APIGatewayPOC project.
 
 ## Available Scripts
 
-### 1. rotate-secrets.sh (Linux/Mac)
+### 1. generate-api-docs.sh / generate-api-docs.ps1
+**Purpose:** Generate markdown API documentation from FastAPI OpenAPI specs
+
+**Requirements:**
+- Bash/PowerShell
+- curl (bash version)
+- Services must be running
+- Optional: widdershins for better output (`npm install -g widdershins`)
+- Optional: jq for bash basic output (bash version)
+
+**Usage:**
+```bash
+# Linux/Mac
+chmod +x scripts/generate-api-docs.sh
+./scripts/generate-api-docs.sh
+
+# Windows
+.\scripts\generate-api-docs.ps1
+```
+
+**What it does:**
+- Fetches OpenAPI specs from running services
+- Converts specs to markdown documentation
+- Creates API documentation index
+- Saves to `docs/api/` directory
+
+**Output:**
+- `docs/api/README.md` - API documentation index
+- `docs/api/customer-service.md` - Customer API docs
+- `docs/api/customer-service-openapi.json` - Customer OpenAPI spec
+- `docs/api/product-service.md` - Product API docs
+- `docs/api/product-service-openapi.json` - Product OpenAPI spec
+
+---
+
+### 2. rotate-secrets.sh (Linux/Mac)
 **Purpose:** Rotate Keycloak client secrets
 
 **Requirements:**
@@ -47,7 +82,7 @@ API_GATEWAY_CLIENT_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 
 ---
 
-### 2. rotate-secrets.ps1 (Windows)
+### 3. rotate-secrets.ps1 (Windows)
 **Purpose:** Rotate Keycloak client secrets (PowerShell version)
 
 **Requirements:**
@@ -79,7 +114,7 @@ API_GATEWAY_CLIENT_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 
 ---
 
-### 3. setup.sh (Project Setup)
+### 4. setup.sh (Project Setup)
 **Purpose:** Initial project setup
 
 **Usage:**
@@ -94,7 +129,7 @@ API_GATEWAY_CLIENT_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 
 ---
 
-### 4. start.sh (Start Services)
+### 5. start.sh (Start Services)
 **Purpose:** Start all services
 
 **Usage:**
@@ -109,7 +144,7 @@ API_GATEWAY_CLIENT_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 
 ---
 
-### 5. stop.sh (Stop Services)
+### 6. stop.sh (Stop Services)
 **Purpose:** Stop all services
 
 **Usage:**
@@ -123,7 +158,7 @@ API_GATEWAY_CLIENT_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 
 ---
 
-### 6. test.sh (Run Tests)
+### 7. test.sh (Run Tests)
 **Purpose:** Run integration tests
 
 **Usage:**
@@ -134,6 +169,74 @@ API_GATEWAY_CLIENT_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 **What it does:**
 - Runs pytest test suite
 - Displays test results
+
+---
+
+### 8. validate_project.py (Project Validation)
+**Purpose:** Validate project structure and configuration
+
+**Requirements:**
+- Python 3.x
+- Docker (for docker-compose validation)
+
+**Usage:**
+```bash
+# From project root
+python scripts/validate_project.py
+```
+
+**What it does:**
+- Validates all required files exist
+- Checks Docker configuration syntax
+- Verifies .gitignore patterns
+- Reports missing files or configuration issues
+
+**Example Output:**
+```
+============================================================
+PROJECT STRUCTURE VALIDATION
+============================================================
+? README.md
+? docker-compose.yml
+? .gitignore
+...
+============================================================
+VALIDATION SUMMARY
+============================================================
+Successful checks: 42
+VALIDATION PASSED - All required files are present and configured correctly!
+```
+
+---
+
+### 9. generate-api-docs.py (API Documentation Generator)
+**Purpose:** Generate markdown API documentation from FastAPI OpenAPI specs
+
+**Requirements:**
+- Python 3.x
+- requests library (`pip install requests`)
+- Services must be running
+
+**Usage:**
+```bash
+# Make sure services are running
+docker-compose up -d
+
+# Generate API documentation
+python scripts/generate-api-docs.py
+```
+
+**What it does:**
+- Fetches OpenAPI specs from running FastAPI services
+- Generates markdown documentation
+- Creates API documentation index
+- Saves files to `docs/api/` directory
+
+**Output:**
+- `docs/api/README.md` - API documentation index
+- `docs/api/customer-service.md` - Customer API docs
+- `docs/api/product-service.md` - Product API docs
+- OpenAPI JSON specs
 
 ---
 
@@ -191,13 +294,13 @@ curl -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connec
 
 ### For Development
 
-? **DO:**
+**DO:**
 - Use rotation scripts to generate secure secrets
 - Test secret rotation process
 - Keep .env file in .gitignore
 - Use test-client for quick testing
 
-? **DON'T:**
+**DON'T:**
 - Commit secrets to git
 - Share secrets in chat/email
 - Use weak/predictable secrets
@@ -205,7 +308,7 @@ curl -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connec
 
 ### For Production
 
-? **DO:**
+**DO:**
 - Use secrets manager (Azure Key Vault, AWS Secrets Manager, etc.)
 - Rotate secrets regularly
 - Use different secrets for each environment
@@ -213,7 +316,7 @@ curl -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connec
 - Implement secrets rotation policy
 - Use strong, random secrets (32+ characters)
 
-? **DON'T:**
+**DON'T:**
 - Use default/example secrets
 - Store secrets in plain text files
 - Share production secrets

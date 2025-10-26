@@ -51,9 +51,11 @@ You now have:
 
 ## Next Steps
 
-1. **Explore the APIs**: See [API Documentation](docs/api/)
-2. **Understand Security**: Read [Security Guide](docs/security/security-guide.md)
-3. **Start Development**: Check [Developer Guide](docs/development/quick-reference.md)
+1. **Explore the APIs**: See [API Documentation](docs/api/README.md)
+2. **Interactive API Docs**: Visit http://localhost:8001/docs (Customer) and http://localhost:8002/docs (Product)
+3. **Understand Security**: Read [Security Guide](docs/security/security-guide.md)
+4. **Start Development**: Check [Developer Guide](docs/development/quick-reference.md)
+5. **Generate API Docs**: Run `python scripts/generate-api-docs.py` for markdown docs
 
 ## Troubleshooting
 

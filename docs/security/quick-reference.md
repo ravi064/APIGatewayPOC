@@ -7,7 +7,7 @@
 | **api-gateway** | `gateway-secret-change-in-production` | Confidential |
 | **customer-service** | `customer-service-secret-change-in-production` | Bearer-Only |
 | **product-service** | `product-service-secret-change-in-production` | Bearer-Only |
-| **test-client** | (none) | Public ?? |
+| **test-client** | (none) | Public? |
 
 ---
 
@@ -50,7 +50,7 @@ curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/customers
 
 ## Security Tests
 
-### ? Test 1: Client Secret Required
+### Test 1: Client Secret Required
 ```bash
 # Should FAIL (no secret):
 curl -X POST .../token -d "client_id=api-gateway" -d "grant_type=client_credentials"
@@ -62,7 +62,7 @@ curl -X POST .../token \
   -d "grant_type=client_credentials"
 ```
 
-### ? Test 2: Redirect URI Validation
+### Test 2: Redirect URI Validation
 ```bash
 # Valid redirects only:
 - http://localhost:8080/*
@@ -122,7 +122,7 @@ If secrets are compromised:
 
 2. **Update in Keycloak:**
    - Use rotation script OR
-   - Admin Console ? Clients ? [Client] ? Credentials ? Regenerate
+   - Admin Console Clients [Client] Credentials Regenerate
 
 3. **Update environment variables:**
  ```bash
@@ -162,22 +162,22 @@ If secrets are compromised:
 ## Client Types Explained
 
 ### Confidential Client (api-gateway)
-- **Has secret:** ? Yes
-- **Can issue tokens:** ? Yes
-- **Can validate tokens:** ? Yes
+- **Has secret:** Yes
+- **Can issue tokens:** Yes
+- **Can validate tokens:** Yes
 - **Use case:** Gateway, web apps
 
 ### Bearer-Only Client (customer/product-service)
-- **Has secret:** ? Yes (for service-to-service)
-- **Can issue tokens:** ? No
-- **Can validate tokens:** ? Yes
+- **Has secret:** Yes (for service-to-service)
+- **Can issue tokens:** No
+- **Can validate tokens:** Yes
 - **Use case:** Backend services, APIs
 
 ### Public Client (test-client)
-- **Has secret:** ? No
-- **Can issue tokens:** ? Yes
-- **Can validate tokens:** ? Yes
-- **Use case:** Development/testing only ??
+- **Has secret:** No
+- **Can issue tokens:** Yes
+- **Can validate tokens:** Yes
+- **Use case:** Development/testing only
 
 ---
 
@@ -190,7 +190,7 @@ If secrets are compromised:
 
 ---
 
-**?? REMEMBER:**
+**REMEMBER:**
 - **NEVER** commit secrets to git
 - **ALWAYS** use environment variables for secrets
 - **DISABLE** test-client in production
