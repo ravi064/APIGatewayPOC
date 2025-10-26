@@ -153,7 +153,7 @@ You can decode and verify your JWT token at https://jwt.io or using:
 
 ```bash
 # Decode JWT (requires jq)
-echo $TOKEN | cut -d. -f2 | base64 -d2>/dev/null | jq .
+echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq .
 ```
 
 **Expected claims:**

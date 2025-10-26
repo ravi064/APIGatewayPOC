@@ -61,14 +61,15 @@ A proof-of-concept microservices application demonstrating API Gateway patterns 
 docker-compose up -d
 
 # Get access token
-curl -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connect/token \
-  -d "client_id=test-client" \
-  -d "username=testuser" \
-  -d "password=testpass" \
-  -d "grant_type=password"
+TOKEN=$(curl -s -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connect/token \
+ -H "Content-Type: application/x-www-form-urlencoded" \
+ -d "client_id=test-client" \
+ -d "username=testuser" \
+ -d "password=testpass" \
+ -d "grant_type=password" | jq -r '.access_token')
 
 # Access protected endpoint
-curl -H "Authorization: Bearer <TOKEN>" http://localhost:8080/customers
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/customers
 
 # View logs
 docker-compose logs -f

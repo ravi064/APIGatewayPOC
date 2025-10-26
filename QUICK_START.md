@@ -29,17 +29,18 @@ docker-compose logs -f keycloak
 
 ### 4. Get Access Token
 ```bash
-curl -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connect/token \
-  -d "client_id=test-client" \
-  -d "username=testuser" \
-  -d "password=testpass" \
-  -d "grant_type=password"
+TOKEN=$(curl -s -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connect/token \
+ -H "Content-Type: application/x-www-form-urlencoded" \
+ -d "client_id=test-client" \
+ -d "username=testuser" \
+ -d "password=testpass" \
+ -d "grant_type=password" | jq -r '.access_token')
 ```
 
 ### 5. Test Protected Endpoint
 ```bash
 # Replace TOKEN with access_token from step 4
-curl -H "Authorization: Bearer TOKEN" http://localhost:8080/customers
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/customers
 ```
 
 ## Success!
