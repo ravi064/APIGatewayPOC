@@ -124,7 +124,7 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["user", "customer-manager"],
+      "realmRoles": [ "user" ],
       "clientRoles": {}
     },
     {
@@ -141,7 +141,58 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["user", "admin", "customer-manager", "product-manager"],
+      "realmRoles": [ "user", "admin", "customer-manager", "product-manager" ],
+      "clientRoles": {}
+    },
+    {
+      "username": "testuserCM",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "testuserCM@example.com",
+      "firstName": "TestCM",
+      "lastName": "User",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpass",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [ "user", "customer-manager" ],
+      "clientRoles": {}
+    },
+    {
+      "username": "testuserPM",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "testuserPM@example.com",
+      "firstName": "TestPM",
+      "lastName": "User",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpass",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [ "user", "product-manager" ],
+      "clientRoles": {}
+    },
+    {
+      "username": "testuserPCM",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "testuserPCM@example.com",
+      "firstName": "TestPCM",
+      "lastName": "User",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpass",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [ "user", "product-category-manager" ],
       "clientRoles": {}
     }
   ],
