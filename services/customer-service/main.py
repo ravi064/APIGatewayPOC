@@ -22,42 +22,42 @@ customers_db = [
     Customer(
         id=1,
         name="Test UserUNV",
-        email="test.userUNV@example.com",
+        email="testuserUNV@example.com",
         phone="+1234567891",
         created_at=datetime.now()
     ),
     Customer(
         id=2,
         name="Test User",
-        email="test.user@example.com",
+        email="testuser@example.com",
         phone="+1234567892",
         created_at=datetime.now()
     ),
     Customer(
         id=3,
         name="Admin User",
-        email="admin.user@example.com",
+        email="adminuser@example.com",
         phone="+1234567893",
         created_at=datetime.now()
     ),
     Customer(
         id=4,
         name="Test UserCM",
-        email="test.userCM@example.com",
+        email="testuserCM@example.com",
         phone="+1234567894",
         created_at=datetime.now()
     ),
     Customer(
         id=5,
         name="Test UserPM",
-        email="test.userPM@example.com",
+        email="testuserPM@example.com",
         phone="+1234567895",
         created_at=datetime.now()
     ),
     Customer(
         id=6,
         name="Test UserPCM",
-        email="test.userPCM@example.com",
+        email="testuserPCM@example.com",
         phone="+1234567896",
         created_at=datetime.now()
     ),

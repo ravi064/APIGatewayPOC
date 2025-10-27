@@ -159,15 +159,31 @@ echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq .
 **Expected claims:**
 ```json
 {
- "exp":1234567890,
- "iat":1234567890,
- "iss": "http://localhost:8180/realms/api-gateway-poc",
- "sub": "user-id-here",
- "typ": "Bearer",
- "azp": "test-client",
- "realm_access": {
- "roles": ["user", "customer-manager"]
- }
+  "exp": 1761529888,
+  "iat": 1761529588,
+  "jti": "onrtro:f5c157db-fae7-c91c-9be1-6743885440ca",
+  "iss": "http://localhost:8180/realms/api-gateway-poc",
+  "sub": "ff7c5cc6-7c87-4f47-94af-f51a641dbbec",
+  "typ": "Bearer",
+  "azp": "test-client",
+  "sid": "d1646165-67e7-5dbf-72c7-2c1b563aaba9",
+  "acr": "1",
+  "allowed-origins": [
+    "http://127.0.0.1:*",
+    "http://localhost:*"
+  ],
+  "realm_access": {
+    "roles": [
+      "user"
+    ]
+  },
+  "scope": "profile email",
+  "email_verified": true,
+  "name": "Test User",
+  "preferred_username": "testuser",
+  "given_name": "Test",
+  "family_name": "User",
+  "email": "testuser@example.com"
 }
 ```
 

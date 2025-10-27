@@ -156,7 +156,7 @@
       "username": "adminuser",
       "enabled": true,
       "emailVerified": true,
-      "email": "admin@example.com",
+      "email": "adminuser@example.com",
       "firstName": "Admin",
       "lastName": "User",
       "credentials": [
