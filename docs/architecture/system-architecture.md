@@ -2,7 +2,35 @@
 
 This document provides a high-level view of the API Gateway POC system architecture, showing the major components, their relationships, and key technical details.
 
-## Architecture Diagram
+## Architecture Diagram (High Level)
+
+```mermaid
+graph LR
+    Client[Client]
+    Gateway[API Gateway - Envoy:8080]
+    Keycloak[Keycloak:8180]
+    Customer[Customer Service:8001]
+    Product[Product Service:8002]
+    
+    Client -->|1. Login| Keycloak
+    Keycloak -->|2. JWT Token| Client
+    Client -->|3. API Request + Token| Gateway
+    Gateway -->|Validate JWT| Keycloak
+    Gateway -->|Route /customers| Customer
+    Gateway -->|Route /products| Product
+    
+    classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef gatewayStyle fill:#e1f5fe,stroke:#0277bd,stroke-width:3px
+    classDef authStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef serviceStyle fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class Client clientStyle
+    class Gateway gatewayStyle
+    class Keycloak authStyle
+    class Customer,Product serviceStyle
+```
+
+## Architecture Diagram (Detailed)
 
 ```mermaid
 graph TB
