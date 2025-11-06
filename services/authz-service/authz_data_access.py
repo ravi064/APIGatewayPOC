@@ -11,11 +11,13 @@ logger = logging.getLogger(__name__)
 # Mock database: user email -> roles mapping
 # Simulates PostgreSQL table: user_roles (email VARCHAR PRIMARY KEY, roles TEXT[])
 USER_ROLES_DB = {
-    "testuser@example.com": ["user"],
-    "alice@example.com": ["user", "customer-manager"],
-    "bob@example.com": ["user"],
-    "admin@example.com": ["user", "admin", "customer-manager"],
-    "manager@example.com": ["user", "customer-manager"],
+    "test.user-unvrfd@example.com": ["unverified-user"],
+    "test.user-vrfd@example.com": ["verified-user"],
+    "test.user@example.com": ["user"],
+    "test.user-cm@example.com": ["user", "customer-manager"],
+    "test.user-pm@example.com": ["user", "product-manager"],
+    "test.user-pcm@example.com": ["user", "product-category-manager"],
+    "admin.user@example.com": ["user", "admin"]
 }
 
 

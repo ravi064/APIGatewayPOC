@@ -94,8 +94,16 @@ class TestProductService:
 
     def test_unverified_user_blocked_from_products(self):
         """Test that unverified users cannot access product service"""
-        headers = get_auth_headers("testuserUNV")
+        headers = get_auth_headers("testuser-unvrfd")
     
         # Should get 403 Forbidden (RBAC blocks unverified users)
+        response = requests.get(f"{GATEWAY_BASE_URL}/products", headers=headers)
+        assert response.status_code == 403  # RBAC denial
+
+    def test_verified_user_blocked_from_products(self):
+        """Test that verified users cannot access product service"""
+        headers = get_auth_headers("testuser-vrfd")
+    
+        # Should get 403 Forbidden (RBAC blocks verified users)
         response = requests.get(f"{GATEWAY_BASE_URL}/products", headers=headers)
         assert response.status_code == 403  # RBAC denial

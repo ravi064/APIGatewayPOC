@@ -224,12 +224,13 @@ openssl rand -base6432
 
 | Username | Password | Roles |
 |-------------|------------|------------------------------------------------|
-| testuserUNV | testpass | unverified-user |
+| testuser-unvrfd | testpass | unverified-user |
+| testuser-vrfd | testpass | verified-user |
 | testuser | testpass | user |
-| adminuser | adminpass | user, admin, customer-manager, product-manager |
-| testuserCM | testpass | user, customer-manager |
-| testuserPM | testpass | user, product-manager |
-| testuserPCM | testpass | user, product-category-manager |
+| adminuser | adminpass | user, admin |
+| testuser-cm | testpass | user, customer-manager |
+| testuser-pm | testpass | user, product-manager |
+| testuser-pcm | testpass | user, product-category-manager |
 
 **NOTE**: unverified-user means they have a login but haven't been verified to get any roles.
 This is separate from guest users who have no login at all.

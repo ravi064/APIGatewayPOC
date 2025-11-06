@@ -192,11 +192,13 @@ Response: 500 Internal Server Error (Service error)
 # Schema: (email VARCHAR PRIMARY KEY, roles TEXT[])
 
 USER_ROLES_DB = {
-    "testuser@example.com": ["user"],
-    "alice@example.com": ["user", "customer-manager"],
-    "bob@example.com": ["user"],
-    "admin@example.com": ["user", "admin", "customer-manager"],
-    "manager@example.com": ["user", "customer-manager"],
+    "test.user-unvrfd@example.com": ["unverified-user"],
+    "test.user-vrfd@example.com": ["verified-user"],
+    "test.user@example.com": ["user"],
+    "test.user-cm@example.com": ["user", "customer-manager"],
+    "test.user-pm@example.com": ["user", "product-manager"],
+    "test.user-pcm@example.com": ["user", "product-category-manager"],
+    "admin.user@example.com": ["user", "admin"]
 }
 ```
 
@@ -496,11 +498,13 @@ logger = logging.getLogger(__name__)
 
 # Mock database: user email -> roles mapping
 USER_ROLES_DB = {
-    "testuser@example.com": ["user"],
-    "alice@example.com": ["user", "customer-manager"],
-    "bob@example.com": ["user"],
-    "admin@example.com": ["user", "admin", "customer-manager"],
-    "manager@example.com": ["user", "customer-manager"],
+    "test.user-unvrfd@example.com": ["unverified-user"],
+    "test.user-vrfd@example.com": ["verified-user"],
+    "test.user@example.com": ["user"],
+    "test.user-cm@example.com": ["user", "customer-manager"],
+    "test.user-pm@example.com": ["user", "product-manager"],
+    "test.user-pcm@example.com": ["user", "product-category-manager"],
+    "admin.user@example.com": ["user", "admin"]
 }
 
 class UserNotFoundException(Exception):
@@ -696,7 +700,7 @@ def test_customer_access_with_authz_service():
 def test_customer_manager_access():
     """Test that customer-manager role allows access to all customers"""
     
-    token = get_keycloak_token("alice", "alicepass")
+    token = get_keycloak_token("testuser-cm", "testpass")
     
     response = requests.get(
         "http://localhost:8080/customers",
@@ -704,7 +708,7 @@ def test_customer_manager_access():
     )
     
     assert response.status_code == 200
-    # Should return all customers (alice has customer-manager role)
+    # Should return all customers (testuser-cm has customer-manager role)
 
 def test_unknown_user_blocked():
     """Test that users not in authz database are blocked"""

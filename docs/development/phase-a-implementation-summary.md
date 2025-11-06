@@ -139,25 +139,25 @@ $response
 ### 7. Test with Different Users
 
 ```powershell
-# Test with alice (customer-manager role)
+# Test with testuser-cm (customer-manager role)
 $response = Invoke-RestMethod -Uri "http://localhost:8180/realms/api-gateway-poc/protocol/openid-connect/token" `
   -Method POST `
   -ContentType "application/x-www-form-urlencoded" `
   -Body @{
     client_id = "test-client"
-    username = "alice"
-    password = "alicepass"
+    username = "testuser-cm"
+    password = "testpass"
     grant_type = "password"
   }
 
-$ALICE_TOKEN = $response.access_token
+$TOKEN = $response.access_token
 
-# Access customers (should work - alice has customer-manager role)
+# Access customers (should work - testuser-cm has customer-manager role)
 Invoke-RestMethod -Uri "http://localhost:8080/customers" `
-  -Headers @{Authorization = "Bearer $ALICE_TOKEN"}
+  -Headers @{Authorization = "Bearer $TOKEN"}
 ```
 
-**Note**: Alice user needs to be created in Keycloak first. If not present, this test will fail.
+**Note**: testuser-cm user needs to be created in Keycloak first. If not present, this test will fail.
 
 ### 8. Run Integration Tests
 

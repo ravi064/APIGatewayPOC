@@ -67,21 +67,21 @@ def test_customer_access_with_external_authz():
 def test_customer_manager_access():
     """
     Test that user with customer-manager role can access customer service.
-    User 'alice' should have 'user' and 'customer-manager' roles.
+    User 'testuser-cm' should have 'user' and 'customer-manager' roles.
     """
-    # Note: Need to create 'alice' user in Keycloak first
-    # For now, we'll skip this test if alice doesn't exist
+    # Note: Need to create 'testuser-cm' user in Keycloak first
+    # For now, we'll skip this test if testuser-cm doesn't exist
     try:
-        token = get_keycloak_token("alice", "alicepass")
+        token = get_keycloak_token("testuser-cm", "testpass")
     except AssertionError:
-        pytest.skip("User 'alice' not configured in Keycloak")
+        pytest.skip("User 'testuser-cm' not configured in Keycloak")
     
     response = requests.get(
         "http://localhost:8080/customers",
         headers={"Authorization": f"Bearer {token}"}
     )
     
-    # Should succeed (alice has required roles from authz service)
+    # Should succeed (testuser-cm has required roles from authz service)
     assert response.status_code == 200
 
 
@@ -170,6 +170,9 @@ def test_customer_service_rbac_with_authz_roles():
     # testuser should only see their own record (email filter in customer service)
     # Note: Customer service still uses JWT for fine-grained authorization
     assert isinstance(customers, list)
+    assert len(customers) == 1, f"Expected 1 customer, got {len(customers)}: {customers}"
+    customer = customers[0]
+    assert customer.get("email") == "test.user@example.com", f"Expected email 'test.user@example.com', got {customer.get('email')}"
 
 
 @pytest.mark.skip(reason="User not in authz database - implement when needed")

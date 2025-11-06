@@ -51,13 +51,15 @@ Body: (empty)
 
 Current mock users and their roles:
 
-| Email | Roles |
-|-------|-------|
-| testuser@example.com | user |
-| alice@example.com | user, customer-manager |
-| bob@example.com | user |
-| admin@example.com | user, admin, customer-manager |
-| manager@example.com | user, customer-manager |
+| Email | Roles | Access Level |
+|-------|-------|--------------|
+| test.user-unvrfd@example.com | unverified-user | Very limited accees (Email not verified) |
+| test.user-vrfd@example.com | verified-user | Limited access (Email verified, incomplete profile) |
+| test.user@example.com | user | Basic access (profile completed) |
+| test.user-cm@example.com | user, customer-manager | Can manage customers |
+| test.user-pm@example.com | user, product-manager | Can manage products |
+| test.user-pcm@example.com | user, product-category-manager | Can manage products in the category they are responsible for |
+| admin.user@example.com | user, admin| System management |
 
 ## Configuration
 

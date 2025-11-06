@@ -15,58 +15,51 @@ class CustomerDataAccess:
         self._customers_db = [
             Customer(
                 id=1,
-                name="Test UserUNV",
-                email="testuserUNV@example.com",
+                name="Test User-unvrfd",
+                email="test.user-unvrfd@example.com",
                 phone="+1234567891",
                 created_at=datetime.now()
             ),
             Customer(
                 id=2,
-                name="Test User",
-                email="testuser@example.com",
+                name="Test User-vrfd",
+                email="test.user-vrfd@example.com",
                 phone="+1234567892",
                 created_at=datetime.now()
             ),
             Customer(
                 id=3,
-                name="Admin User",
-                email="adminuser@example.com",
+                name="Test User",
+                email="test.user@example.com",
                 phone="+1234567893",
                 created_at=datetime.now()
             ),
             Customer(
                 id=4,
-                name="Test UserCM",
-                email="testuserCM@example.com",
+                name="Test User-cm",
+                email="test.user-cm@example.com",
                 phone="+1234567894",
                 created_at=datetime.now()
             ),
             Customer(
                 id=5,
-                name="Test UserPM",
-                email="testuserPM@example.com",
+                name="Test User-pm",
+                email="test.user-pm@example.com",
                 phone="+1234567895",
                 created_at=datetime.now()
             ),
             Customer(
                 id=6,
-                name="Test UserPCM",
-                email="testuserPCM@example.com",
+                name="Test User-pcm",
+                email="test.user-pcm@example.com",
                 phone="+1234567896",
                 created_at=datetime.now()
             ),
             Customer(
                 id=7,
-                name="John Doe",
-                email="john.doe@example.com",
+                name="Admin User",
+                email="admin.user@example.com",
                 phone="+1234567897",
-                created_at=datetime.now()
-            ),
-            Customer(
-                id=8,
-                name="Jane Smith",
-                email="jane.smith@example.com",
-                phone="+1234567898",
                 created_at=datetime.now()
             )
         ]

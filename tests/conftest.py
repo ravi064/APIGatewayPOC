@@ -15,12 +15,13 @@ TEST_CLIENT_ID = "test-client"
 
 # Test user credentials
 TEST_USERS = {
-    "testuserUNV": {"username": "testuserUNV", "password": "testpass", "roles": ["unverified-user"]},
+    "testuser-unvrfd": {"username": "testuser-unvrfd", "password": "testpass", "roles": ["unverified-user"]},
+    "testuser-vrfd": {"username": "testuser-vrfd", "password": "testpass", "roles": ["verified-user"]},
     "testuser": {"username": "testuser", "password": "testpass", "roles": ["user"]},
     "adminuser": {"username": "adminuser", "password": "adminpass", "roles": ["user", "admin"]},
-    "testuserCM": {"username": "testuserCM", "password": "testpass", "roles": ["user", "customer-manager"]},
-    "testuserPM": {"username": "testuserPM", "password": "testpass", "roles": ["user", "product-manager"]},
-    "testuserPCM": {"username": "testuserPCM", "password": "testpass", "roles": ["user", "product-category-manager"]},
+    "testuser-cm": {"username": "testuser-cm", "password": "testpass", "roles": ["user", "customer-manager"]},
+    "testuser-pm": {"username": "testuser-pm", "password": "testpass", "roles": ["user", "product-manager"]},
+    "testuser-pcm": {"username": "testuser-pcm", "password": "testpass", "roles": ["user", "product-category-manager"]},
 }
 
 
@@ -41,7 +42,7 @@ def get_access_token(username: str = "testuser", password: Optional[str] = None)
     Examples:
         >>> token = get_access_token()  # Default testuser
         >>> token = get_access_token("adminuser")
-        >>> token = get_access_token("testuserUNV")
+        >>> token = get_access_token("testuser-unvrfd", "custompass")
     """
     # Get password from TEST_USERS if not provided
     if password is None:
@@ -177,13 +178,13 @@ def wait_for_services():
 @pytest.fixture
 def unverified_user_token():
     """Fixture for unverified user token"""
-    return get_access_token("testuserUNV")
+    return get_access_token("testuser-unvrfd")
 
 
 @pytest.fixture
 def verified_user_token():
     """Fixture for verified user token"""
-    return get_access_token("testuser")
+    return get_access_token("testuser-vrfd")
 
 
 @pytest.fixture
@@ -195,16 +196,16 @@ def admin_user_token():
 @pytest.fixture
 def customer_manager_token():
     """Fixture for customer manager token"""
-    return get_access_token("testuserCM")
+    return get_access_token("testuser-cm")
 
 
 @pytest.fixture
 def product_manager_token():
     """Fixture for product manager token"""
-    return get_access_token("testuserPM")
+    return get_access_token("testuser-pm")
 
 
 @pytest.fixture
 def product_category_manager_token():
     """Fixture for product category manager token"""
-    return get_access_token("testuserPCM")
+    return get_access_token("testuser-pcm")

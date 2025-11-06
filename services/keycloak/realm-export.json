@@ -89,57 +89,42 @@
       }
     }
   ],
-  "roles": {
-    "realm": [
-      {
-        "name": "unverified-user",
-        "description": "Least access to resources"
-      },
-      {
-        "name": "user",
-        "description": "Basic user role (verified user)"
-      },
-      {
-        "name": "admin",
-        "description": "Administrator role"
-      },
-      {
-        "name": "customer-manager",
-        "description": "Can manage customer data"
-      },
-      {
-        "name": "product-manager",
-        "description": "Can manage product data"
-      },
-      {
-        "name": "product-category-manager",
-        "description": "Can manage product data within a category"
-      }
-    ]
-  },
   "users": [
     {
-      "username": "testuserUNV",
+      "username": "testuser-unvrfd",
       "enabled": true,
       "emailVerified": true,
-      "email": "testuserUNV@example.com",
-      "firstName": "TestUNV",
-      "lastName": "User",
+      "email": "test.user-unvrfd@example.com",
+      "firstName": "Test",
+      "lastName": "User-unvrfd",
       "credentials": [
         {
           "type": "password",
           "value": "testpass",
           "temporary": false
         }
-      ],
-      "realmRoles": [ "unverified-user" ],
-      "clientRoles": {}
+      ]
+    },
+    {
+      "username": "testuser-vrfd",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "test.user-vrfd@example.com",
+      "firstName": "Test",
+      "lastName": "User-vrfd",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpass",
+          "temporary": false
+        }
+      ]
     },
     {
       "username": "testuser",
       "enabled": true,
       "emailVerified": true,
-      "email": "testuser@example.com",
+      "email": "test.user@example.com",
       "firstName": "Test",
       "lastName": "User",
       "credentials": [
@@ -148,15 +133,58 @@
           "value": "testpass",
           "temporary": false
         }
-      ],
-      "realmRoles": [ "user" ],
-      "clientRoles": {}
+      ]
+    },
+    {
+      "username": "testuser-cm",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "test.user-cm@example.com",
+      "firstName": "Test",
+      "lastName": "User-cm",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpass",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "testuser-pm",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "test.user-pm@example.com",
+      "firstName": "Test",
+      "lastName": "User-pm",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpass",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "testuser-pcm",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "test.user-pcm@example.com",
+      "firstName": "Test",
+      "lastName": "User-pcm",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpass",
+          "temporary": false
+        }
+      ]
     },
     {
       "username": "adminuser",
       "enabled": true,
       "emailVerified": true,
-      "email": "adminuser@example.com",
+      "email": "admin.user@example.com",
       "firstName": "Admin",
       "lastName": "User",
       "credentials": [
@@ -165,64 +193,10 @@
           "value": "adminpass",
           "temporary": false
         }
-      ],
-      "realmRoles": [ "user", "admin" ],
-      "clientRoles": {}
-    },
-    {
-      "username": "testuserCM",
-      "enabled": true,
-      "emailVerified": true,
-      "email": "testuserCM@example.com",
-      "firstName": "TestCM",
-      "lastName": "User",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "testpass",
-          "temporary": false
-        }
-      ],
-      "realmRoles": [ "user", "customer-manager" ],
-      "clientRoles": {}
-    },
-    {
-      "username": "testuserPM",
-      "enabled": true,
-      "emailVerified": true,
-      "email": "testuserPM@example.com",
-      "firstName": "TestPM",
-      "lastName": "User",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "testpass",
-          "temporary": false
-        }
-      ],
-      "realmRoles": [ "user", "product-manager" ],
-      "clientRoles": {}
-    },
-    {
-      "username": "testuserPCM",
-      "enabled": true,
-      "emailVerified": true,
-      "email": "testuserPCM@example.com",
-      "firstName": "TestPCM",
-      "lastName": "User",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "testpass",
-          "temporary": false
-        }
-      ],
-      "realmRoles": [ "user", "product-category-manager" ],
-      "clientRoles": {}
+      ]
     }
   ],
   "groups": [],
-  "defaultRoles": [ "unverified-user" ],
   "requiredCredentials": ["password"],
   "scopeMappings": [],
   "clientScopeMappings": {},

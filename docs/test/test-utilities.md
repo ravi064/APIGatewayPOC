@@ -10,12 +10,13 @@ All test users are defined in the `TEST_USERS` dictionary:
 
 | Username | Password | Roles |
 |----------|----------|-------|
-| `testuserUNV` | `testpass` | `unverified-user` |
+| `testuser-unvrfd` | `testpass` | `unverified-user` |
+| `testuser-vrfd` | `testpass` | `verified-user` |
 | `testuser` | `testpass` | `user` |
 | `adminuser` | `adminpass` | `user`, `admin` |
-| `testuserCM` | `testpass` | `user`, `customer-manager` |
-| `testuserPM` | `testpass` | `user`, `product-manager` |
-| `testuserPCM` | `testpass` | `user`, `product-category-manager` |
+| `testuser-cm` | `testpass` | `user`, `customer-manager` |
+| `testuser-pm` | `testpass` | `user`, `product-manager` |
+| `testuser-pcm` | `testpass` | `user`, `product-category-manager` |
 
 ## Core Functions
 
@@ -186,7 +187,7 @@ import requests
 
 def test_unverified_user_blocked():
     """Test unverified users are blocked"""
-    headers = get_auth_headers("testuserUNV")
+    headers = get_auth_headers("testuser-unvrfd")
     response = requests.get(f"{GATEWAY_BASE_URL}/customers", headers=headers)
     assert response.status_code == 403  # RBAC blocks unverified users
 ```
@@ -210,7 +211,7 @@ from conftest import get_auth_headers, GATEWAY_BASE_URL, TEST_USERS
 import requests
 import pytest
 
-@pytest.mark.parametrize("username", ["testuser", "adminuser", "testuserCM"])
+@pytest.mark.parametrize("username", ["testuser", "adminuser", "testuser-cm"])
 def test_verified_users_have_access(username):
     """Test that all verified users can access services"""
     headers = get_auth_headers(username)

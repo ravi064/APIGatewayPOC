@@ -15,7 +15,7 @@ BASE_URL = GATEWAY_BASE_URL
 
 def test_gateway_routing():
     """Test that the gateway routes requests correctly"""
-    headers = get_auth_headers("testuserCM")
+    headers = get_auth_headers("testuser-cm")
  
     # Test customer service through gateway
     response = requests.get(f"{BASE_URL}/customers", headers=headers)
@@ -25,7 +25,7 @@ def test_gateway_routing():
     assert len(customers) > 0
     
     # Test product service through gateway
-    headers = get_auth_headers("testuserPM")
+    headers = get_auth_headers("testuser-pm")
     response = requests.get(f"{BASE_URL}/products", headers=headers)
     assert response.status_code == 200
     products = response.json()
@@ -57,7 +57,7 @@ def test_product_service_health():
 
 def test_customer_by_id():
     """Test getting specific customer"""
-    headers = get_auth_headers("testuserCM")
+    headers = get_auth_headers("testuser-cm")
     
     response = requests.get(f"{BASE_URL}/customers/1", headers=headers)
     assert response.status_code == 200
@@ -69,7 +69,7 @@ def test_customer_by_id():
 
 def test_product_by_id():
     """Test getting specific product"""
-    headers = get_auth_headers("testuserPM")
+    headers = get_auth_headers("testuser-pm")
     
     response = requests.get(f"{BASE_URL}/products/1", headers=headers)
     assert response.status_code == 200
@@ -81,7 +81,7 @@ def test_product_by_id():
 
 def test_products_by_category():
     """Test getting products by category"""
-    headers = get_auth_headers("testuserPM")
+    headers = get_auth_headers("testuser-pm")
     
     response = requests.get(f"{BASE_URL}/products/category/Electronics", headers=headers)
     assert response.status_code == 200
@@ -105,7 +105,7 @@ def test_unauthorized_access_without_token():
 
 def test_rbac_unverified_user_access():
     """Test RBAC - unverified users should be blocked"""
-    headers = get_auth_headers("testuserUNV")
+    headers = get_auth_headers("testuser-unvrfd")
  
     # Both should fail with 403 Forbidden
     response = requests.get(f"{BASE_URL}/customers", headers=headers)
@@ -117,12 +117,12 @@ def test_rbac_unverified_user_access():
 
 def test_rbac_verified_user_access():
     """Test RBAC - verified users should have access"""
-    headers = get_auth_headers("testuserCM")
+    headers = get_auth_headers("testuser-cm")
     
     # Both should succeed
     response = requests.get(f"{BASE_URL}/customers", headers=headers)
     assert response.status_code == 200
     
-    headers = get_auth_headers("testuserPM")
+    headers = get_auth_headers("testuser-pm")
     response = requests.get(f"{BASE_URL}/products", headers=headers)
     assert response.status_code == 200

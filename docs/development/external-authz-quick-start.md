@@ -12,11 +12,13 @@ Client → Envoy (JWT validation) → AuthZ Service (role lookup) → RBAC → S
 
 | Email | Roles | Access Level |
 |-------|-------|--------------|
-| testuser@example.com | user | Basic access |
-| alice@example.com | user, customer-manager | Can manage customers |
-| bob@example.com | user | Basic access |
-| admin@example.com | user, admin, customer-manager | Full access |
-| manager@example.com | user, customer-manager | Can manage customers |
+| test.user-unvrfd@example.com | unverified-user | Very limited accees (Email not verified) |
+| test.user-vrfd@example.com | verified-user | Limited access (Email verified, incomplete profile) |
+| test.user@example.com | user | Basic access (profile completed) |
+| test.user-cm@example.com | user, customer-manager | Can manage customers |
+| test.user-pm@example.com | user, product-manager | Can manage products |
+| test.user-pcm@example.com | user, product-category-manager | Can manage products in the category they are responsible for |
+| admin.user@example.com | user, admin| System management |
 
 ## Common Commands
 
@@ -85,12 +87,12 @@ Invoke-RestMethod -Uri "http://localhost:8080/customers" -Headers @{Authorizatio
 # Expected: 200 OK, filtered customers
 ```
 
-### Customer Manager (alice)
+### Customer Manager (testuser-cm)
 ```powershell
-# Note: Create alice user in Keycloak first
+# Note: Create testuser-cm user in Keycloak first
 $TOKEN = (Invoke-RestMethod -Uri "http://localhost:8180/realms/api-gateway-poc/protocol/openid-connect/token" `
   -Method POST -ContentType "application/x-www-form-urlencoded" `
-  -Body @{client_id="test-client"; username="alice"; password="alicepass"; grant_type="password"}).access_token
+  -Body @{client_id="test-client"; username="testuser-cm"; password="testpass"; grant_type="password"}).access_token
   
 Invoke-RestMethod -Uri "http://localhost:8080/customers" -Headers @{Authorization="Bearer $TOKEN"}
 # Expected: 200 OK, all customers
@@ -102,8 +104,8 @@ Invoke-RestMethod -Uri "http://localhost:8080/customers" -Headers @{Authorizatio
 Edit `services/authz-service/authz_data_access.py`:
 ```python
 USER_ROLES_DB = {
-    "testuser@example.com": ["user"],
-    "alice@example.com": ["user", "customer-manager"],
+    "test.user@example.com": ["user"],
+    "test.user-cm@example.com": ["user", "customer-manager"],
     # Add new user here
     "newuser@example.com": ["user"],
 }
