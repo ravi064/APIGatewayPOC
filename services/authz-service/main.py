@@ -119,7 +119,11 @@ async def get_user_roles_endpoint(request: Request, path: Optional[str] = None):
     
     Response Headers (200 OK, HTTP/2 lowercase):
         x-user-email: user@example.com
-        x-user-roles: user,customer-manager (comma-separated)
+        x-user-roles: user,customer-manager (comma-separated, NO spaces or whitespace)
+    
+    Note: Role names must contain only printable characters (no whitespace).
+          Multiple roles are returned as a comma-separated list with NO spaces
+          between role names (e.g., "user,customer-manager" not "user, customer-manager").
     
     Args:
         path: Optional path suffix from original request (e.g., "customers", "products")

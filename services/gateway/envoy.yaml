@@ -71,6 +71,7 @@ static_resources:
                     patterns:
                     - exact: authorization
                     - exact: x-request-id
+                    - exact: ":path"
                 authorization_response:
                   allowed_upstream_headers:
                     patterns:
@@ -78,55 +79,14 @@ static_resources:
                     - exact: x-user-roles
               failure_mode_allow: false
           
-          # RBAC Filter
+          # RBAC Filter - Global deny-by-default
           - name: envoy.filters.http.rbac
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.http.rbac.v3.RBAC
               rules:
-                action: ALLOW
-                policies:
-                  "customer-service-access":
-                    permissions:
-                    - header:
-                        name: ":path"
-                        string_match:
-                          prefix: "/customers"
-                    principals:
-                    - or_ids:
-                        ids:
-                        - header:
-                            name: "x-user-roles"
-                            string_match:
-                              contains: "user"
-                        - header:
-                            name: "x-user-roles"
-                            string_match:
-                              contains: "customer-manager"
-                        - header:
-                            name: "x-user-roles"
-                            string_match:
-                              contains: "unverified-user"
-                        - header:
-                            name: "x-user-roles"
-                            string_match:
-                              contains: "verified-user"
-                  "product-service-access":
-                    permissions:
-                    - header:
-                        name: ":path"
-                        string_match:
-                          prefix: "/products"
-                    principals:
-                    - or_ids:
-                        ids:
-                        - header:
-                            name: "x-user-roles"
-                            string_match:
-                              contains: "user"
-                        - header:
-                            name: "x-user-roles"
-                            string_match:
-                              contains: "product-manager"
+                action: DENY
+                policies: {}
+          
           # Router filter (must be last)
           - name: envoy.filters.http.router
             typed_config:
@@ -142,12 +102,46 @@ static_resources:
                   prefix: "/customers"
                 route:
                   cluster: customer_service
+                typed_per_filter_config:
+                  envoy.filters.http.rbac:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.rbac.v3.RBACPerRoute
+                    rbac:
+                      rules:
+                        action: ALLOW
+                        policies:
+                          "customer-service-access":
+                            permissions:
+                            - any: true
+                            principals:
+                            - header:
+                                name: "x-user-roles"
+                                string_match:
+                                  safe_regex:
+                                    google_re2: {}
+                                    regex: "(?:^|,)(user|customer-manager|unverified-user|verified-user)(?:,|$)"
 
               # Product service routes
               - match:
                   prefix: "/products"
                 route:
                   cluster: product_service
+                typed_per_filter_config:
+                  envoy.filters.http.rbac:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.rbac.v3.RBACPerRoute
+                    rbac:
+                      rules:
+                        action: ALLOW
+                        policies:
+                          "product-service-access":
+                            permissions:
+                            - any: true
+                            principals:
+                            - header:
+                                name: "x-user-roles"
+                                string_match:
+                                  safe_regex:
+                                    google_re2: {}
+                                    regex: "(?:^|,)(user|product-manager)(?:,|$)"
 
               # Keycloak routes (no auth required for auth endpoints)
               - match:

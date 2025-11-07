@@ -122,7 +122,7 @@ class TestCustomerRBAC:
 
     def test_admin_user_gets_own_customer_in_list(self):
         """Test that admin user gets their own customer in the list"""
-        headers = get_auth_headers("adminuser")  # Has admin and customer-manager roles
+        headers = get_auth_headers("adminuser")  # Has admin roles
         
         response = requests.get(f"{GATEWAY_BASE_URL}/customers", headers=headers)
         assert response.status_code == 200

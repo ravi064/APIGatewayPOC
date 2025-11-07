@@ -48,6 +48,7 @@ pytest tests/ -v
 pytest tests/test_customer_service.py -v
 pytest tests/test_product_service.py -v
 pytest tests/integration/test_api_gateway.py -v
+pytest tests/integration/test_external_authz.py -v
 ```
 
 ### Run with Coverage

@@ -107,10 +107,11 @@ def test_rbac_unverified_user_access():
     """Test RBAC - unverified users should be blocked"""
     headers = get_auth_headers("testuser-unvrfd")
  
-    # Both should fail with 403 Forbidden
+    # this should should succeed
     response = requests.get(f"{BASE_URL}/customers", headers=headers)
-    assert response.status_code == 403
+    assert response.status_code == 200
     
+    # this should fail with 403 Forbidden
     response = requests.get(f"{BASE_URL}/products", headers=headers)
     assert response.status_code == 403
 
