@@ -8,7 +8,6 @@ headers and used by Envoy's RBAC filter for authorization decisions.
 """
 
 from fastapi import FastAPI, Request, HTTPException, Response
-from fastapi.responses import JSONResponse
 import logging
 import os
 import json
