@@ -6,7 +6,6 @@ Tests the complete flow: Client → Envoy → AuthZ Service → Downstream Servi
 
 import pytest
 import requests
-from typing import Dict
 
 
 def get_keycloak_token(username: str = "testuser", password: str = "testpass") -> str:
