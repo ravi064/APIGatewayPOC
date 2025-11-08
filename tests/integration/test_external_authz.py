@@ -6,7 +6,6 @@ Tests the complete flow: Client → Envoy → AuthZ Service → Downstream Servi
 
 import pytest
 import requests
-import time
 from typing import Dict
 
 
