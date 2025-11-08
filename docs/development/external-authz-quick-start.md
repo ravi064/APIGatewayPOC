@@ -12,7 +12,7 @@ Client → Envoy (JWT validation) → AuthZ Service (role lookup) → RBAC → S
 
 | Email | Roles | Access Level |
 |-------|-------|--------------|
-| test.user-unvrfd@example.com | unverified-user | Very limited accees (Email not verified) |
+| test.user-unvrfd@example.com | unverified-user | Very limited access (Email not verified) |
 | test.user-vrfd@example.com | verified-user | Limited access (Email verified, incomplete profile) |
 | test.user@example.com | user | Basic access (profile completed) |
 | test.user-cm@example.com | user, customer-manager | Can manage customers |
