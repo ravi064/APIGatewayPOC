@@ -144,65 +144,83 @@ async def get_user_roles_endpoint(request: Request, path: Optional[str] = None):
         logger.info(f"[{request_id}] AuthZ role lookup request ({request.method}) received")
     
     try:
-        # Extract and validate Authorization header
         auth_header = request.headers.get("authorization")
         if not auth_header:
-            logger.warning(f"[{request_id}] Missing authorization header")
-            raise HTTPException(
-                status_code=401,
-                detail="Missing authorization header"
+            logger.info(f"[{request_id}] No authorization header found. Returning role 'guest'.")
+            return Response(
+                status_code=200,
+                content="",
+                headers={
+                    "x-user-email": "",
+                    "x-user-roles": "guest"
+                }
             )
-        
-        # Extract token from "Bearer <token>"
+
         parts = auth_header.split()
         if len(parts) != 2 or parts[0].lower() != "bearer":
-            logger.warning(f"[{request_id}] Invalid authorization header format")
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid authorization header format. Expected 'Bearer <token>'"
+            logger.info(f"[{request_id}] Authorization header format invalid. Returning role 'guest'.")
+            return Response(
+                status_code=200,
+                content="",
+                headers={
+                    "x-user-email": "",
+                    "x-user-roles": "guest"
+                }
             )
-        
+
         token = parts[1]
-        
-        # Decode JWT to get user email
-        # Note: Signature already validated by Envoy
-        email = extract_email_from_jwt(token)
+        try:
+            email = extract_email_from_jwt(token)
+        except Exception as e:
+            logger.info(f"[{request_id}] JWT extraction failed. Returning role 'guest'. Reason: {e}")
+            return Response(
+                status_code=200,
+                content="",
+                headers={
+                    "x-user-email": "",
+                    "x-user-roles": "guest"
+                }
+            )
+
         logger.info(f"[{request_id}] User email extracted: {email}")
-        
-        # Lookup roles from database (Phase A: mock data)
-        roles = get_user_roles(email)
-        roles_str = ",".join(roles)
-        
-        logger.info(f"[{request_id}] Roles found for {email}: {roles}")
-        
-        # Return success with roles in headers
-        # Envoy will forward these headers to downstream services
-        # Note: HTTP/2 headers must be lowercase
-        return Response(
-            status_code=200,
-            content="",  # Empty body
-            headers={
-                "x-user-email": email,
-                "x-user-roles": roles_str
-            }
-        )
-    
-    except UserNotFoundException as e:
-        logger.warning(f"[{request_id}] User not found: {e}")
-        raise HTTPException(
-            status_code=403,
-            detail=f"User not authorized: {str(e)}"
-        )
-    
-    except HTTPException:
-        # Re-raise HTTP exceptions as-is
-        raise
-    
+        try:
+            roles = get_user_roles(email)
+            if not roles:
+                logger.info(f"[{request_id}] No roles found for {email}. Returning role 'unverified-user'.")
+                return Response(
+                    status_code=200,
+                    content="",
+                    headers={
+                        "x-user-email": email,
+                        "x-user-roles": "unverified-user"
+                    }
+                )
+            roles_str = ",".join(roles)
+            logger.info(f"[{request_id}] Roles found for {email}: {roles}")
+            return Response(
+                status_code=200,
+                content="",
+                headers={
+                    "x-user-email": email,
+                    "x-user-roles": roles_str
+                }
+            )
+        except UserNotFoundException:
+            logger.info(f"[{request_id}] No DB entry for {email}. Returning role 'unverified-user'.")
+            return Response(
+                status_code=200,
+                content="",
+                headers={
+                    "x-user-email": email,
+                    "x-user-roles": "unverified-user"
+                }
+            )
     except Exception as e:
         logger.error(f"[{request_id}] Unexpected authorization error: {e}", exc_info=True)
-        raise HTTPException(
+        return Response(
             status_code=500,
-            detail="Internal authorization error"
+            content="Internal authorization error",
+            headers={}
         )
 
 

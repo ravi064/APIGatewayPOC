@@ -50,11 +50,7 @@ static_resources:
                   prefix: /customers
                 requires:
                   provider_name: keycloak_provider
-              # Require JWT for product service routes
-              - match:
-                  prefix: /products
-                requires:
-                  provider_name: keycloak_provider
+              # JWT token not required for product service routes
           
           # External Authorization Filter - Role Lookup
           - name: envoy.filters.http.ext_authz
@@ -79,14 +75,6 @@ static_resources:
                     - exact: x-user-roles
               failure_mode_allow: false
           
-          # RBAC Filter - Global deny-by-default
-          - name: envoy.filters.http.rbac
-            typed_config:
-              "@type": type.googleapis.com/envoy.extensions.filters.http.rbac.v3.RBAC
-              rules:
-                action: DENY
-                policies: {}
-          
           # Router filter (must be last)
           - name: envoy.filters.http.router
             typed_config:
@@ -102,46 +90,12 @@ static_resources:
                   prefix: "/customers"
                 route:
                   cluster: customer_service
-                typed_per_filter_config:
-                  envoy.filters.http.rbac:
-                    "@type": type.googleapis.com/envoy.extensions.filters.http.rbac.v3.RBACPerRoute
-                    rbac:
-                      rules:
-                        action: ALLOW
-                        policies:
-                          "customer-service-access":
-                            permissions:
-                            - any: true
-                            principals:
-                            - header:
-                                name: "x-user-roles"
-                                string_match:
-                                  safe_regex:
-                                    google_re2: {}
-                                    regex: "(?:^|,)(user|customer-manager|unverified-user|verified-user)(?:,|$)"
 
               # Product service routes
               - match:
                   prefix: "/products"
                 route:
                   cluster: product_service
-                typed_per_filter_config:
-                  envoy.filters.http.rbac:
-                    "@type": type.googleapis.com/envoy.extensions.filters.http.rbac.v3.RBACPerRoute
-                    rbac:
-                      rules:
-                        action: ALLOW
-                        policies:
-                          "product-service-access":
-                            permissions:
-                            - any: true
-                            principals:
-                            - header:
-                                name: "x-user-roles"
-                                string_match:
-                                  safe_regex:
-                                    google_re2: {}
-                                    regex: "(?:^|,)(user|product-manager)(?:,|$)"
 
               # Keycloak routes (no auth required for auth endpoints)
               - match:
@@ -202,6 +156,13 @@ static_resources:
               socket_address:
                 address: customer-service
                 port_value: 8000
+    health_checks:
+    - timeout: 1s
+      interval: 60s
+      unhealthy_threshold: 2
+      healthy_threshold: 2
+      http_health_check:
+        path: /customers/health
 
   - name: product_service
     connect_timeout: 30s
@@ -217,3 +178,10 @@ static_resources:
               socket_address:
                 address: product-service
                 port_value: 8000
+    health_checks:
+    - timeout: 1s
+      interval: 60s
+      unhealthy_threshold: 2
+      healthy_threshold: 2
+      http_health_check:
+        path: /products/health
