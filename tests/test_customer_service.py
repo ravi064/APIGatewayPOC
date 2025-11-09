@@ -1,3 +1,23 @@
+# Customer Service Test Objectives
+#
+# 1. Validate Customer Service API Endpoints:
+#    Ensure all customer-related endpoints respond correctly to valid requests.
+#
+# 2. Verify RBAC Enforcement:
+#    Confirm that access to customer data is restricted based on user roles (e.g., regular user, customer manager, admin).
+#
+# 3. Test JWT Authentication:
+#    Ensure endpoints require valid JWT tokens and reject requests with missing or invalid tokens.
+#
+# 4. Check Data Integrity and Validation:
+#    Validate that customer data is correctly created, retrieved, updated, and deleted, and that input validation is enforced.
+#
+# 5. Simulate Real-World User Scenarios:
+#    Test access patterns for different user roles, including edge cases (unknown user, guest, etc.).
+#
+# 6. Error Handling and Edge Cases:
+#    Ensure appropriate error responses for invalid input, unauthorized access, and unexpected conditions.
+#
 
 """
 Integration tests for Customer Service (revised for new RBAC logic)

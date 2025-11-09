@@ -45,15 +45,15 @@ static_resources:
                     value_prefix: "Bearer "
                   payload_in_metadata: verified_jwt
               rules:
-              # JWT token not required for product service routes
-              - match:
-                  prefix: /products
 
+              # LIST OF SERVICES THAT NEED JWT AUTHENTICATION
               # Require JWT for customer service routes
               - match:
                   prefix: /customers
                 requires:
                   provider_name: keycloak_provider
+
+              # JWT token not required for product service routes
           
           # External Authorization Filter - Role Lookup
           - name: envoy.filters.http.ext_authz

@@ -1,3 +1,23 @@
+# Product Service Test Objectives
+#
+# 1. Validate Product Service API Endpoints:
+#    Ensure all product-related endpoints respond correctly to valid requests.
+#
+# 2. Verify Open Access Policy:
+#    Confirm that all user roles (including guest/unauthenticated) can access product endpoints, as no RBAC restrictions are enforced.
+#
+# 3. Test Data Retrieval and Filtering:
+#    Validate correct retrieval of all products, individual products by ID, and products by category, including handling of non-existent categories and products.
+#
+# 4. Check Health Check Endpoint:
+#    Ensure the health check endpoint responds with correct service status.
+#
+# 5. Simulate Real-World User Scenarios:
+#    Test access patterns for various user roles and unauthenticated (guest) users.
+#
+# 6. Error Handling and Edge Cases:
+#    Ensure appropriate error responses for non-existent products and categories, and verify endpoint behavior for all access patterns.
+#
 """
 Integration tests for Product Service
 """
