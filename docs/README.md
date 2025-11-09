@@ -2,71 +2,94 @@
 
 Complete documentation for the API Gateway Proof of Concept.
 
+## Quick Start
+
+**New to the project?** Start here:
+1. [Quick Start](../QUICK_START.md) - Get running in 5 minutes
+2. [System Architecture](architecture/system-architecture.md) - Understand the system
+3. Pick your guide below based on your role
+
+## Documentation by Audience
+
+### UI Developers (React/Frontend)
+- [UI Developer Guide](UI_DEVELOPER_GUIDE.md) - React authentication and roles
+- [React Auth Integration](development/react-auth-integration.md) - Detailed examples
+- [API Documentation](api/README.md) - API endpoints reference
+
+### Backend Developers (FastAPI)
+- [Backend Developer Guide](BACKEND_DEVELOPER_GUIDE.md) - FastAPI service development
+- [Developer Guide](DEVELOPER_GUIDE.md) - Common commands and testing
+- [AuthZ Service](../services/authz-service/README.md) - External authorization
+- [Shared Utilities](../services/shared/) - Common code
+
+### DevOps/Security
+- [Production Deployment](PRODUCTION_DEPLOYMENT.md) - Deployment checklist
+- [Security Quick Start](security/security-quick-start.md) - Security essentials
+- [Security Guide](security/security-guide.md) - Comprehensive security docs
+- [Keycloak Setup](setup/keycloak-setup.md) - Authentication configuration
+
+### All Developers
+- [Developer Guide](DEVELOPER_GUIDE.md) - Common commands, testing, troubleshooting
+- [API Generation](api/API_GENERATION_GUIDE.md) - Generate API documentation
+- [Scripts Documentation](../scripts/README.md) - Utility scripts
+
 ## Documentation Structure
 
-### Getting Started
-- [Quick Start](../QUICK_START.md) - Get running in 5 minutes
-- [Keycloak Setup](setup/keycloak-setup.md) - Authentication setup
+### Core Guides (Start Here)
+- [UI Developer Guide](UI_DEVELOPER_GUIDE.md) - React integration
+- [Backend Developer Guide](BACKEND_DEVELOPER_GUIDE.md) - FastAPI services
+- [Production Deployment](PRODUCTION_DEPLOYMENT.md) - Deployment guide
+- [Developer Guide](DEVELOPER_GUIDE.md) - Commands and testing
 
 ### Security
-- [Security Guide](security/security-guide.md) - Comprehensive security documentation
-- [Security Fixes](security/security-fixes.md) - Recent security improvements
-- [Quick Reference](security/quick-reference.md) - Security commands reference
-
-### Development
-- [Quick Reference](development/quick-reference.md) - Common commands and workflows
-- [Scripts Documentation](../scripts/README.md) - Utility scripts guide
-
-### Testing
-- [Test Utilities](test/test-utilities.md) - Tools for testing services
-
-### API Documentation
-- [API Documentation](api/README.md) - Auto-generated API documentation for all services
-- [API Generation Guide](api/API_GENERATION_GUIDE.md) - How to generate API docs
-- [Customer Service API](api/customer-service.md) - Customer service endpoints
-- [Product Service API](api/product-service.md) - Product service endpoints
+- [Security Quick Start](security/security-quick-start.md) - Concise security guide
+- [Security Guide](security/security-guide.md) - Detailed security documentation
+- [Security Fixes](security/security-fixes.md) - Recent improvements
 
 ### Architecture
-- [System Architecture](architecture/system-architecture.md) - Complete system overview
-- [Authentication & Authorization Flow](architecture/authentication-authorization-flow.md) - Security flow diagrams
+- [System Architecture](architecture/system-architecture.md) - System overview
+- [Authentication & Authorization Flow](architecture/authentication-authorization-flow.md) - Auth diagrams
 
-### Operations
-Documentation for deployment and operations (coming soon)
+### API Documentation
+- [API Documentation](api/README.md) - Auto-generated API docs
+- [API Generation Guide](api/API_GENERATION_GUIDE.md) - How to generate docs
+- Interactive docs: [Customer](http://localhost:8001/docs) | [Product](http://localhost:8002/docs)
 
-### Reports
-- [Project Status](../reports/project-status.md) - Current project status
-- [Verification Report](../reports/verification-report.md) - Validation results
-- [Restructuring Summary](../reports/RESTRUCTURING_SUMMARY.md) - Documentation reorganization details
+### Development
+- [React Auth Integration](development/react-auth-integration.md) - UI auth details
+- [Scripts Documentation](../scripts/README.md) - Utility scripts
+
+### Setup
+- [Keycloak Setup](setup/keycloak-setup.md) - Authentication configuration
 
 ## Quick Find
 
-**Common Tasks:**
-- [Start services](development/quick-reference.md#start-services)
-- [Get access token](security/quick-reference.md#authentication-examples)
-- [Rotate secrets](../scripts/README.md#secret-rotation-workflow)
+**Get Started:**
+- [5-minute setup](../QUICK_START.md)
+- [Start services](DEVELOPER_GUIDE.md#quick-start)
+- [Get access token](security/security-quick-start.md#get-started-in-3-steps)
+
+**By Task:**
+- [Add UI authentication](UI_DEVELOPER_GUIDE.md#quick-start)
+- [Create new service](BACKEND_DEVELOPER_GUIDE.md#quick-start)
+- [Deploy to production](PRODUCTION_DEPLOYMENT.md#pre-deployment-checklist)
+- [Run tests](DEVELOPER_GUIDE.md#testing)
 - [Generate API docs](api/API_GENERATION_GUIDE.md#quick-start)
-- [Validate project](../scripts/validate_project.py) - Project validation tool
+- [Rotate secrets](PRODUCTION_DEPLOYMENT.md#secret-management)
 
-**By Role:**
-- **New Developers**: Start with [Quick Start](../QUICK_START.md)
-- **Security Team**: See [Security Guide](security/security-guide.md)
-- **API Users**: Browse [API Documentation](api/README.md)
-- **DevOps**: Check service READMEs in [services/](../services/)
-
-## Contributing to Docs
-
-Found an error or want to improve documentation?
-
-1. Edit the relevant markdown file
-2. Test any code examples
-3. Commit your changes
+**By Component:**
+- [Gateway (Envoy)](../services/gateway/)
+- [AuthZ Service](../services/authz-service/README.md)
+- [Customer Service](../services/customer-service/)
+- [Product Service](../services/product-service/)
+- [Keycloak](../services/keycloak/README.md)
 
 ## Documentation Updates
 
-- **Last Updated**: October 2025
-- **Version**: 2.0 (Keycloak Integration)
-- **Next Phase**: Phase 3 - Database Integration
+- **Last Updated**: November 2025
+- **Status**: External authorization with Redis caching complete
+- **Focus**: Production-ready API Gateway with role-based access control
 
 ---
 
-**Need help?** Check the [Quick Reference](development/quick-reference.md) or review [Project Status](../reports/project-status.md).
+**Need help?** Check the [Developer Guide](DEVELOPER_GUIDE.md) for common commands and troubleshooting.

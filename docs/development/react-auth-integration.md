@@ -2,22 +2,18 @@
 
 ## Overview
 
-This guide shows how to integrate your React application with the API Gateway's authentication and authorization system. The gateway uses Keycloak for authentication (JWT tokens) and an external authorization service for role-based access control.
+This guide shows how to integrate your React application with the API Gateway for authentication and role-based authorization.
 
-## Architecture
-
+**Architecture Flow:**
 ```
-React App → API Gateway (Envoy) → Authorization Service
-    ↓             ↓                        ↓
-  JWT Token   Validates JWT         Looks up roles
-                                    (DB + Redis cache)
+React → Keycloak (JWT) → /auth/me → Authorization Service → Roles
 ```
 
 **Key Points:**
 - Keycloak issues JWT tokens (authentication only)
-- Authorization service manages platform roles (not stored in JWT)
-- React fetches roles via `/auth/me` endpoint
-- All backend API calls validate permissions server-side
+- Authorization service manages roles (not in JWT due to IT policy)
+- React calls `/auth/me` to fetch user roles
+- Backend validates all permissions (client-side checks are UX only)
 
 ---
 
@@ -256,14 +252,14 @@ function Navigation() {
 
 ## Security Best Practices
 
-### ⚠️ Client-Side Role Checks Are for UX Only
+### Client-Side Role Checks Are for UX Only
 
-**Important:** Role checks in React are for UI optimization only. They improve user experience by hiding unavailable features, but **do NOT provide security**.
+**Important:** Role checks in React improve user experience by hiding unavailable features, but do NOT provide security.
 
 **Always validate permissions on the backend:**
 - Every API request is validated by the gateway
 - Backend services enforce authorization rules
-- Users cannot bypass server-side checks by manipulating client code
+- Users cannot bypass server-side checks
 
 ### Token Refresh Strategy
 
@@ -302,42 +298,11 @@ useEffect(() => {
 
 ### Handle Stale Roles
 
-Role data cached in React may become stale if roles change on the backend. Strategies:
+Role data cached in React may become stale. Recommended approaches:
 
-1. **Refresh on visibility change** (user returns to tab):
-```javascript
-useEffect(() => {
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === 'visible') {
-      refreshUser();
-    }
-  };
-  
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-  return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-}, []);
-```
-
-2. **Refresh after sensitive operations**:
-```javascript
-async function updateUserRole(userId, newRole) {
-  await fetch('/admin/users/roles', { 
-    method: 'POST', 
-    body: JSON.stringify({ userId, role: newRole }) 
-  });
-  
-  // Refresh current user's roles
-  await refreshUser();
-}
-```
-
-3. **Periodic refresh** (e.g., every 5 minutes):
-```javascript
-useEffect(() => {
-  const interval = setInterval(() => refreshUser(), 5 * 60 * 1000);
-  return () => clearInterval(interval);
-}, []);
-```
+1. **Refresh on visibility change**: Call `refreshUser()` when user returns to tab
+2. **Refresh after role changes**: Update roles after admin operations
+3. **Periodic refresh**: Optional 5-minute interval for critical apps
 
 ---
 
@@ -376,45 +341,20 @@ Authorization: Bearer <jwt-token>
 
 ---
 
+
+
+---
+
 ## Troubleshooting
 
-### Issue: "No authorization token provided" (401)
+**401 Unauthorized:**
+- Token missing or expired - ensure Authorization header is set
+- Call login flow to get new token
 
-**Cause:** JWT token missing or not sent in Authorization header.
+**Roles appear stale:**
+- Call `refreshUser()` to fetch fresh roles from backend
+- Roles are cached in Redis with 5-minute TTL
 
-**Solution:** Ensure token is stored and included in request:
-```javascript
-headers: { 'Authorization': `Bearer ${token}` }
-```
-
-### Issue: Roles appear stale in UI
-
-**Cause:** React cached user data doesn't reflect backend role changes.
-
-**Solution:** Call `refreshUser()` to fetch fresh roles from `/auth/me`.
-
-### Issue: CORS errors when calling API
-
-**Cause:** Gateway not configured for CORS (if React runs on different origin).
-
-**Solution:** Configure Envoy CORS policy or use same origin for React app.
-
----
-
-## Complete Example
-
-See `examples/react-auth-demo` for a full working example with:
-- Login/logout flow
-- Role-based routing
-- Conditional UI rendering
-- Token refresh
-- Error handling
-
----
-
-## Questions?
-
-For technical support or questions:
-- Check API Gateway logs: `docker-compose logs gateway`
-- Check authz-service logs: `docker-compose logs authz-service`
-- Review security documentation: `docs/security/`
+**Need help:**
+- Check logs: `docker-compose logs gateway` or `docker-compose logs authz-service`
+- Review [Security Guide](../security/security-guide.md)

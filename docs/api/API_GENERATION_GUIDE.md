@@ -39,9 +39,9 @@ python scripts/generate-api-docs.py
 ```
 
 **Pros:**
-- [x] No additional dependencies (uses Python's built-in libraries + requests)
-- [x] Works on Windows, Linux, Mac
-- [x] Generates clean, readable markdown
+- No additional dependencies (uses Python's built-in libraries + requests)
+- Works on Windows, Linux, Mac
+- Generates clean, readable markdown
 
 **Output:**
 - `docs/api/README.md` - API documentation index
@@ -62,9 +62,9 @@ docker-compose up -d
 ```
 
 **Pros:**
-- [x] Native Windows PowerShell
-- [x] Can use widdershins if installed for better output
-- [x] Falls back to basic markdown if widdershins not available
+- Native Windows PowerShell
+- Can use widdershins if installed for better output
+- Falls back to basic markdown if widdershins not available
 
 ---
 
@@ -80,9 +80,9 @@ chmod +x scripts/generate-api-docs.sh
 ```
 
 **Pros:**
-- [x] Native Linux/Mac bash
-- [x] Can use widdershins if installed for better output
-- [x] Can use jq for basic markdown generation
+- Native Linux/Mac bash
+- Can use widdershins if installed for better output
+- Can use jq for basic markdown generation
 
 ---
 
