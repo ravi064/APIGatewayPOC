@@ -213,7 +213,7 @@ graph TB
 ### **Product Service**
 - **Purpose**: Product catalog and category management
 - **Port**: `8002` - FastAPI application
-- **Authorization**: All users with `user` role (via Envoy)
+- **Authorization**: `guest` role as well as all other roles
 - **Technology**: FastAPI 0.111.0 + Python 3.12
 - **Data Layer**: Mock data (future PostgreSQL)
 
@@ -222,7 +222,7 @@ graph TB
 - **Purpose**: JWT token decoding and user context extraction
 - **Features**:
   - Base64 JWT payload decoding
-  - Role extraction from `realm_access.roles`
+  - Role extraction from `realm_access.roles` or `x-user-roles` header
   - FastAPI dependency injection support
 
 ### **Common Utilities**
@@ -268,16 +268,15 @@ graph TB
 ### Authorization Layers
 1. **Envoy JWT Validation**: Validates JWT signature and expiration via Keycloak JWKS
 2. **Envoy ext_authz**: Calls Authorization Service for role lookup, injects roles in headers
-3. **Envoy RBAC Filter**: Role-based routing (requires `user` role minimum)
 4. **Customer Service**: Fine-grained RBAC (customer-manager vs user)
-5. **Product Service**: Basic access control (user role via Envoy)
+5. **Product Service**: Basic access control (enforced via Envoy)
 
 ### Security Features
 - JWT signature validation
 - Role-based access control (RBAC)
 - Client secret authentication
 - Comprehensive audit logging
-- Request rate limiting (Envoy)
+- Request rate limiting (Envoy - not implemented)
 - Secure container networking
 
 ## Data Flow Patterns
@@ -305,22 +304,22 @@ React -> /auth/me -> Envoy (JWT validation) -> AuthZ Service -> Redis/Database -
 
 ## Future Enhancements
 
-### Phase 3: Database Integration
+### Database Integration
 - Replace mock data with PostgreSQL
 - Add database connection pooling
 - Implement data persistence layer
 
-### Phase 4: CRUD Operations
+### CRUD Operations
 - Add POST, PUT, DELETE endpoints
 - Implement data validation
 - Add transaction management
 
-### Phase 5: Observability
+### Observability
 - Jaeger distributed tracing
 - Prometheus metrics collection
 - Grafana dashboards
 
-### Phase 6: Advanced Features
+### Advanced Features
 - Advanced rate limiting
 - Request/response transformation
 - API versioning

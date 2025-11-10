@@ -144,6 +144,7 @@ sequenceDiagram
   - Check token expiration
   - Extract user email from JWT
 - **Action**: If JWT invalid or expired, return 401
+- **Note**: Anonymous access is available to service endpoints
 
 ### 3. Authorization Service (ext_authz) Layer
 - **Purpose**: Role lookup service with caching
@@ -164,16 +165,7 @@ sequenceDiagram
   - LRU eviction policy (256MB max memory)
 - **Cache Key Format**: `user:platform-roles:{email}`
 
-### 5. Envoy RBAC Filter Layer
-- **Purpose**: Role-based routing enforcement
-- **Responsibilities**:
-  - Check x-user-roles header from Authorization Service
-  - Enforce role-based routing rules
-  - Inject role headers into downstream requests
-  - Forward valid requests to services
-- **Configuration**: Routes require minimum "user" role for service access
-
-### 6. Service-Level Authorization Layer
+### 5. Service-Level Authorization Layer
 - **Purpose**: Business logic authorization
 - **Responsibilities**:
   - Decode JWT payload for user information
@@ -182,7 +174,7 @@ sequenceDiagram
   - Enforce business rules (e.g., users can only access their own data)
   - Comprehensive audit logging
 
-### 7. Data Access Layer
+### 6. Data Access Layer
 - **Purpose**: Secure data operations
 - **Responsibilities**:
   - Abstract data access from business logic
@@ -200,7 +192,7 @@ sequenceDiagram
   - `user` role: Access only if email matches
 
 ### Product Service
-- **All GET endpoints**: Any user with `user` role (handled by Envoy)
+- **All GET endpoints**: `guest` role as well as all other roles
 - **Future write operations**: Will require `product-manager` role
 
 ## JWT Token Structure

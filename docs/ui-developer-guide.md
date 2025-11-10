@@ -14,9 +14,13 @@ React → Keycloak (login) → JWT Token → /auth/me → User Roles
 - Keycloak handles authentication (username/password → JWT)
 - Roles are NOT in JWT (IT policy restriction)
 - Call `/auth/me` to get user email and roles
-- Backend always validates permissions (client checks are UX only)
+- **Backend always validates permissions** (client checks are UX only)
 
 ## Quick Start
+
+> :memo: **NOTE:** The following code is provided as an example only.
+>
+> Understand security implications before adopting this code for production.
 
 ### 1. Login Flow
 
@@ -156,10 +160,14 @@ function ProtectedRoute({ children, requiredRoles = [] }) {
 | Role | Description |
 |------|-------------|
 | `guest` | No JWT token |
-| `unverified-user` | Authenticated but no roles |
+| `unverified-user` | Authenticated. Given 'unverified-user' role |
 | `user` | Basic access |
 | `customer-manager` | Customer management |
 | `product-manager` | Product management |
+
+> :memo: **NOTE:** Role progression is from *guest -> unverified-user -> user*.
+>
+> After gaining *user* role, the given user can have multiple roles but not *guest* or *unverified-user*
 
 ## API Endpoints
 
@@ -188,11 +196,16 @@ Authorization: Bearer <jwt-token>
 
 ### Business APIs
 
-All require JWT token in `Authorization: Bearer <token>` header:
+The following require JWT token in `Authorization: Bearer <token>` header:
 
 ```
 GET  /customers          - List customers
 GET  /customers/{id}     - Get customer
+```
+
+The following will work with or without JWT token in the header:
+
+```
 GET  /products           - List products
 GET  /products/{id}      - Get product
 ```
@@ -292,9 +305,9 @@ test('shows customer management for customer-manager role', async () => {
 
 ## Additional Resources
 
-- [React Auth Integration](react-auth-integration.md) - Detailed examples
-- [Security Quick Start](../security/security-quick-start.md) - Authentication basics
-- [API Documentation](../api/README.md) - Full API reference
+- [React Auth Integration](./development/react-auth-integration.md) - Detailed examples
+- [Security Quick Start](./security/security-quick-start.md) - Authentication basics
+- [API Documentation](./api/README.md) - Full API reference
 
 ## Quick Reference
 
@@ -321,4 +334,4 @@ window.location.href = '/login';
 
 ---
 
-**Need help?** Check [React Auth Integration](react-auth-integration.md) for complete examples.
+**Need help?** Check [React Auth Integration](./development/react-auth-integration.md) for complete examples.

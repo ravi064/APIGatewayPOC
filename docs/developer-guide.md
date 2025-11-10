@@ -435,9 +435,9 @@ git push origin feature/my-feature
 
 ## Additional Resources
 
-- [UI Developer Guide](UI_DEVELOPER_GUIDE.md) - React integration
-- [Backend Developer Guide](BACKEND_DEVELOPER_GUIDE.md) - FastAPI services
-- [Production Deployment](PRODUCTION_DEPLOYMENT.md) - Deployment checklist
+- [UI Developer Guide](ui-developer-guide.md) - React integration
+- [Backend Developer Guide](backend-developer-guide.md) - FastAPI services
+- [Production Deployment](production-deployment-guide.md) - Deployment checklist
 - [Security Quick Start](security/security-quick-start.md) - Security essentials
 - [API Documentation](api/README.md) - API reference
 
@@ -466,4 +466,4 @@ docker-compose down
 
 ---
 
-**Need more help?** Check the specific guides for [UI](UI_DEVELOPER_GUIDE.md), [Backend](BACKEND_DEVELOPER_GUIDE.md), or [Production](PRODUCTION_DEPLOYMENT.md) development.
+**Need more help?** Check the specific guides for [UI](ui-developer-guide.md), [Backend](backend-developer-guide.md), or [Production](production-deployment-guide.md) development.

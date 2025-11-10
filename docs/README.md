@@ -12,18 +12,18 @@ Complete documentation for the API Gateway Proof of Concept.
 ## Documentation by Audience
 
 ### UI Developers (React/Frontend)
-- [UI Developer Guide](UI_DEVELOPER_GUIDE.md) - React authentication and roles
+- [UI Developer Guide](ui-developer-guide.md) - React authentication and roles
 - [React Auth Integration](development/react-auth-integration.md) - Detailed examples
 - [API Documentation](api/README.md) - API endpoints reference
 
 ### Backend Developers (FastAPI)
-- [Backend Developer Guide](BACKEND_DEVELOPER_GUIDE.md) - FastAPI service development
+- [Backend Developer Guide](backend-developer-guide.md) - FastAPI service development
 - [Developer Guide](DEVELOPER_GUIDE.md) - Common commands and testing
 - [AuthZ Service](../services/authz-service/README.md) - External authorization
 - [Shared Utilities](../services/shared/) - Common code
 
 ### DevOps/Security
-- [Production Deployment](PRODUCTION_DEPLOYMENT.md) - Deployment checklist
+- [Production Deployment](production-deployment-guide.md) - Deployment checklist
 - [Security Quick Start](security/security-quick-start.md) - Security essentials
 - [Security Guide](security/security-guide.md) - Comprehensive security docs
 - [Keycloak Setup](setup/keycloak-setup.md) - Authentication configuration
@@ -36,9 +36,9 @@ Complete documentation for the API Gateway Proof of Concept.
 ## Documentation Structure
 
 ### Core Guides (Start Here)
-- [UI Developer Guide](UI_DEVELOPER_GUIDE.md) - React integration
-- [Backend Developer Guide](BACKEND_DEVELOPER_GUIDE.md) - FastAPI services
-- [Production Deployment](PRODUCTION_DEPLOYMENT.md) - Deployment guide
+- [UI Developer Guide](ui-developer-guide.md) - React integration
+- [Backend Developer Guide](backend-developer-guide.md) - FastAPI services
+- [Production Deployment](production-deployment-guide.md) - Deployment guide
 - [Developer Guide](DEVELOPER_GUIDE.md) - Commands and testing
 
 ### Security
@@ -70,12 +70,12 @@ Complete documentation for the API Gateway Proof of Concept.
 - [Get access token](security/security-quick-start.md#get-started-in-3-steps)
 
 **By Task:**
-- [Add UI authentication](UI_DEVELOPER_GUIDE.md#quick-start)
-- [Create new service](BACKEND_DEVELOPER_GUIDE.md#quick-start)
-- [Deploy to production](PRODUCTION_DEPLOYMENT.md#pre-deployment-checklist)
+- [Add UI authentication](ui-developer-guide.md#quick-start)
+- [Create new service](backend-developer-guide.md#quick-start)
+- [Deploy to production](production-deployment-guide.md#pre-deployment-checklist)
 - [Run tests](DEVELOPER_GUIDE.md#testing)
 - [Generate API docs](api/API_GENERATION_GUIDE.md#quick-start)
-- [Rotate secrets](PRODUCTION_DEPLOYMENT.md#secret-management)
+- [Rotate secrets](production-deployment-guide.md#secret-management)
 
 **By Component:**
 - [Gateway (Envoy)](../services/gateway/)

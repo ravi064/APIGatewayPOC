@@ -18,7 +18,7 @@ Keycloak is an open-source Identity and Access Management (IAM) solution that pr
 - All confidential clients now have client secrets
 - Redirect URIs are restricted to specific allowed URLs
 - The `test-client` is for development only - **DISABLE IN PRODUCTION**
-- See [SECURITY_GUIDE.md](../../SECURITY_GUIDE.md) for complete security documentation
+- See [Security Guide](../../docs/security/security-guide.md) for complete security documentation
 
 **Production Requirements:**
 - Change all client secrets to cryptographically secure values
@@ -210,7 +210,7 @@ For production deployments, you should:
    - Set up monitoring and alerting
    - Enable metrics collection
 
-See [SECURITY_GUIDE.md](../../SECURITY_GUIDE.md) for detailed security configuration.
+See [Security Guide](../../docs/security/security-guide.md) for detailed security configuration.
 
 ## Customizing the Realm
 
@@ -262,7 +262,7 @@ If you see warnings about deprecated environment variables:
 
 ## References
 
-- [SECURITY_GUIDE.md](../../SECURITY_GUIDE.md) - Complete security documentation
+- [Security Guide](../../docs/security/security-guide.md) - Complete security documentation
 - [Keycloak Documentation](https://www.keycloak.org/documentation)
 - [OAuth 2.0 Specification](https://oauth.net/2/)
 - [OpenID Connect Specification](https://openid.net/connect/)

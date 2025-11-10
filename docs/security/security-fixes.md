@@ -410,8 +410,8 @@ Before deploying to production:
 ## Resources
 
 ### Documentation
-- [SECURITY_GUIDE.md](SECURITY_GUIDE.md) - Complete security documentation
-- [KEYCLOAK_SETUP.md](KEYCLOAK_SETUP.md) - Quick start guide
+- [Security Guide](../security/security-guide.md) - Complete security documentation
+- [Keycloak Setup](../setup/keycloak-setup.md) - Quick start guide
 - [services/keycloak/README.md](services/keycloak/README.md) - Keycloak service details
 - [.env.example](.env.example) - Environment variables template
 

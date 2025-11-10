@@ -495,10 +495,8 @@ When adding new scripts:
 ---
 
 ## Resources
-
-- [SECURITY_GUIDE.md](../SECURITY_GUIDE.md) - Complete security documentation
-- [SECURITY_QUICK_REFERENCE.md](../SECURITY_QUICK_REFERENCE.md) - Quick reference
-- [KEYCLOAK_SETUP.md](../KEYCLOAK_SETUP.md) - Keycloak setup guide
+- [Security Guide](../docs/security/security-guide.md) - Complete security documentation
+- [Keycloak Setup](../docs/setup/keycloak-setup.md) - Keycloak setup guide
 
 ---
 

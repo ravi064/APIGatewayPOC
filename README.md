@@ -16,22 +16,22 @@ A proof-of-concept microservices application demonstrating API Gateway patterns 
 ┌─────────────────────────────────────────────┐
 │          API Gateway (Envoy)                │
 │     Port 8080 (API) | Port 9901 (Admin)     │
-│   + JWT Auth + External Authorization      │
+│   + JWT Auth + External Authorization       │
 └────┬────────────────┬────────────────┬──────┘
      │                │                │
      │         ┌──────▼──────┐         │
      │         │   AuthZ     │         │
      │         │  Service    │         │
      │         │  Port 9000  │         │
-     │         │ (Role Lookup│         │
-     │         │from PostgreSQL)       │
+     │         │ (Roles from |         │
+     │         |   Database  │         |
      │         └─────────────┘         │
      │                                 │
-┌────▼──────┐              ┌──────────▼────┐
-│ Keycloak  │              │ Microservices │
-│ IAM/Auth  │              │Customer/Product
-│Port 8180  │              │Ports 8001/8002│
-└───────────┘              └───────────────┘
+┌────▼──────┐               ┌──────────▼─────┐
+│ Keycloak  │               │ Microservices  │
+│ IAM/Auth  │               │Customer/Product|
+│Port 8180  │               │Ports 8001/8002 │
+└───────────┘               └────────────────┘
 ```
 
 ## Features
@@ -51,9 +51,9 @@ A proof-of-concept microservices application demonstrating API Gateway patterns 
 - [Developer Guide](docs/DEVELOPER_GUIDE.md) - Common commands and testing
 
 ### By Role
-- **UI Developers**: [UI Developer Guide](docs/UI_DEVELOPER_GUIDE.md) - React authentication
-- **Backend Developers**: [Backend Developer Guide](docs/BACKEND_DEVELOPER_GUIDE.md) - FastAPI services
-- **DevOps/Security**: [Production Deployment](docs/PRODUCTION_DEPLOYMENT.md) - Deployment checklist
+- **UI Developers**: [UI Developer Guide](docs/ui-developer-guide.md) - React authentication
+- **Backend Developers**: [Backend Developer Guide](docs/backend-developer-guide.md) - FastAPI services
+- **DevOps/Security**: [Production Deployment](docs/production-deployment-guide.md) - Deployment checklist
 
 ### Essential Topics
 - **Security**: [Security Quick Start](docs/security/security-quick-start.md) | [Detailed Guide](docs/security/security-guide.md)
@@ -86,7 +86,7 @@ docker-compose logs -f
 docker-compose down
 ```
 
-See [Quick Reference](docs/development/quick-reference.md) for more commands.
+See [Developer Guide](docs/DEVELOPER_GUIDE.md) for more commands.
 
 ## API Endpoints
 
@@ -141,10 +141,12 @@ APIGatewayPOC/
 │   ├── development/      # Developer guides
 │   ├── api/              # Auto-generated API documentation
 │   └── architecture/     # Architecture documentation
+│   └── test/             # Testing related documentation
 │
-├── services/   # Microservices
-│ ├── gateway/            # Envoy API Gateway
+├── services/             # Microservices
+│   ├── gateway/          # Envoy API Gateway
 │   ├── keycloak/         # Keycloak IAM
+│   ├── authz-service/    # Authorization service (role lookup)
 │   ├── customer-service/ # Customer API
 │   ├── product-service/  # Product API
 │   └── shared/           # Shared utilities
@@ -168,7 +170,7 @@ APIGatewayPOC/
 
 - **API Gateway**: Envoy Proxy v1.28
 - **Authentication**: Keycloak 23.0
-- **Backend**: FastAPI 0.104.1 (Python 3.11)
+- **Backend**: FastAPI 0.104.1 (Python 3.12)
 - **Containerization**: Docker & Docker Compose
 - **Testing**: pytest, requests
 - **Data Validation**: Pydantic 2.5.0
@@ -207,7 +209,6 @@ docker-compose up -d --build
 **Need more help?**
 - Check [Quick Reference](docs/development/quick-reference.md)
 - Review [Documentation](docs/README.md)
-- See [Project Status](reports/project-status.md)
 
 ## License
 

@@ -463,8 +463,8 @@ kubectl top pods
 
 - [Security Guide](security/security-guide.md) - Detailed security configuration
 - [Security Quick Start](security/security-quick-start.md) - Security essentials
-- [Backend Developer Guide](BACKEND_DEVELOPER_GUIDE.md) - Service development
-- [UI Developer Guide](UI_DEVELOPER_GUIDE.md) - Frontend integration
+- [Backend Developer Guide](backend-developer-guide.md) - Service development
+- [UI Developer Guide](ui-developer-guide.md) - Frontend integration
 
 ---
 

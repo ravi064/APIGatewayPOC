@@ -13,7 +13,14 @@ React → Keycloak (JWT) → /auth/me → Authorization Service → Roles
 - Keycloak issues JWT tokens (authentication only)
 - Authorization service manages roles (not in JWT due to IT policy)
 - React calls `/auth/me` to fetch user roles
-- Backend validates all permissions (client-side checks are UX only)
+- **Backend always validates permissions** (client-side checks are UX only)
+
+
+## Quick Start
+
+> :memo: **NOTE:** The following code is provided as an example only.
+>
+> Understand security implications before adopting this code for production.
 
 ---
 
@@ -242,11 +249,15 @@ function Navigation() {
 
 | Role | Description |
 |------|-------------|
-| `guest` | Unauthenticated user (no JWT) |
-| `unverified-user` | Authenticated but not assigned roles in system |
-| `user` | Standard authenticated user |
-| `customer-manager` | Can manage customer data |
-| `product-manager` | Can manage product catalog |
+| `guest` | No JWT token |
+| `unverified-user` | Authenticated. Given 'unverified-user' role |
+| `user` | Basic access |
+| `customer-manager` | Customer management |
+| `product-manager` | Product management |
+
+> :memo: **NOTE:** Role progression is from *guest -> unverified-user -> user*.
+>
+> After gaining *user* role, the given user can have multiple roles but not *guest* or *unverified-user*
 
 ---
 
