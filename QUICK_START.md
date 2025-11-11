@@ -56,12 +56,12 @@ You now have:
 2. **Interactive API Docs**: Visit http://localhost:8001/docs (Customer) and http://localhost:8002/docs (Product)
 3. **Understand Security**: Read [Security Guide](docs/security/security-guide.md)
 4. **View Architecture**: See [System Architecture](docs/architecture/system-architecture.md)
-5. **Start Development**: Check [Developer Guide](docs/development/quick-reference.md)
+5. **Start Development**: Check [Developer Guide](docs/developer-guide.md)
 6. **Generate API Docs**: Run `python scripts/generate-api-docs.py` for markdown docs
 
 ## Troubleshooting
 
-Having issues? See [docs/development/quick-reference.md](docs/development/quick-reference.md) for troubleshooting tips.
+Having issues? See [Developer Guide](docs/developer-guide.md) for troubleshooting tips.
 
 ## Full Documentation
 

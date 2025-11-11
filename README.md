@@ -48,7 +48,7 @@ A proof-of-concept microservices application demonstrating API Gateway patterns 
 
 ### Quick Start
 - [5-Minute Setup](QUICK_START.md) - Get running quickly
-- [Developer Guide](docs/DEVELOPER_GUIDE.md) - Common commands and testing
+- [Developer Guide](docs/developer-guide.md) - Common commands and testing
 
 ### By Role
 - **UI Developers**: [UI Developer Guide](docs/ui-developer-guide.md) - React authentication
@@ -86,7 +86,7 @@ docker-compose logs -f
 docker-compose down
 ```
 
-See [Developer Guide](docs/DEVELOPER_GUIDE.md) for more commands.
+See [Developer Guide](docs/developer-guide.md) for more commands.
 
 ## API Endpoints
 
