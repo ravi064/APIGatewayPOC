@@ -29,7 +29,7 @@ This configuration includes the following security improvements:
 - [x] Restricted web origins
 - [x] Service-to-service authentication support
 
-**For detailed security information, see [SECURITY_GUIDE.md](SECURITY_GUIDE.md)**
+**For detailed security information, see [Security Guide](../security/security-guide.md)**
 
 ## Testing Authentication
 
@@ -351,12 +351,12 @@ docker-compose up -d --build
 - Enable comprehensive audit logging
 - Implement rate limiting
 
-**See [SECURITY_GUIDE.md](SECURITY_GUIDE.md) for complete security documentation.**
+**See [Security Guide](../security/security-guide.md) for complete security documentation.**
 
 ## Next Steps
 
 1. **Understand Security Model**
- - Review [SECURITY_GUIDE.md](SECURITY_GUIDE.md)
+ - Review [Security Guide](../security/security-guide.md)
  - Understand client types (confidential vs public vs bearer-only)
  - Learn about OAuth2.0 flows
 
@@ -384,8 +384,7 @@ docker-compose up -d --build
 
 ## Additional Resources
 
-- [SECURITY_GUIDE.md](SECURITY_GUIDE.md) - Complete security documentation
-- [services/keycloak/README.md](services/keycloak/README.md) - Keycloak service details
+- [Security Guide](../security/security-guide.md) - Complete security documentation
 - [Keycloak Documentation](https://www.keycloak.org/documentation)
 - [OAuth2.0 RFC](https://tools.ietf.org/html/rfc6749)
 - [OpenID Connect Specification](https://openid.net/connect/)

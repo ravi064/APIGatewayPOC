@@ -92,10 +92,10 @@ def get_customer(customer_id: int, current_user: JWTPayload = Depends(get_curren
             logger.info(f"Access granted: User {current_user.email} has customer-manager role")
             return customer
         else:
-            logger.warning(f"Access denied: User {current_user.email} has customer-manager role but customer {customer_id} not found.")
+            logger.warning(f"Customer not found: User {current_user.email} has customer-manager role but customer {customer_id} not found.")
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access denied: You are not authorized to view this customer."
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Customer not found."
             )
 
     # 3. Otherwise, check if the customer email matches the user's email

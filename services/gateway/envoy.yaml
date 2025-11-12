@@ -53,6 +53,12 @@ static_resources:
                 requires:
                   provider_name: keycloak_provider
 
+              # Require JWT for /auth/me endpoint (user info for React UI)
+              - match:
+                  prefix: /auth/me
+                requires:
+                  provider_name: keycloak_provider
+
               # JWT token not required for product service routes
           
           # External Authorization Filter - Role Lookup
@@ -88,6 +94,13 @@ static_resources:
             - name: local_service
               domains: ["*"]
               routes:
+              # User info endpoint for React UI (must be before /auth Keycloak route)
+              - match:
+                  prefix: "/auth/me"
+                route:
+                  cluster: authz_service_cluster
+                  prefix_rewrite: "/authz/me"
+
               # Customer service routes
               - match:
                   prefix: "/customers"
@@ -139,7 +152,7 @@ static_resources:
                 port_value: 9000
     health_checks:
     - timeout: 1s
-      interval: 30s
+      interval: 15s
       unhealthy_threshold: 2
       healthy_threshold: 2
       http_health_check:
@@ -161,7 +174,7 @@ static_resources:
                 port_value: 8000
     health_checks:
     - timeout: 1s
-      interval: 60s
+      interval: 30s
       unhealthy_threshold: 2
       healthy_threshold: 2
       http_health_check:
@@ -183,7 +196,7 @@ static_resources:
                 port_value: 8000
     health_checks:
     - timeout: 1s
-      interval: 60s
+      interval: 30s
       unhealthy_threshold: 2
       healthy_threshold: 2
       http_health_check:

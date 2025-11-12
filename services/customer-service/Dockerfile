@@ -14,8 +14,13 @@ COPY shared /app/shared
 # Copy application code
 COPY customer-service/ .
 
-# Expose port
+# Set default service port and expose it
+ENV SERVICE_PORT=8000
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Copy entrypoint script
+COPY customer-service/start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Run the application using entrypoint script (JSON form for proper signal handling)
+CMD ["/app/start.sh"]

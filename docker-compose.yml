@@ -23,6 +23,22 @@ services:
     networks:
       - microservices-network
 
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - microservices-network
+    # NO ports exposed - internal network only for security
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    volumes:
+      - redis-data:/data
+
   # Authorization Service
   authz-service:
     build:
@@ -32,6 +48,8 @@ services:
       - SERVICE_PORT=9000
       - LOG_LEVEL=INFO
       - SERVICE_NAME=authz-service
+      - REDIS_URL=redis://redis:6379
+      - REDIS_TTL=300
     networks:
       - microservices-network
     # NO ports exposed - internal network only for security
@@ -78,3 +96,6 @@ services:
 networks:
   microservices-network:
     driver: bridge
+
+volumes:
+  redis-data:

@@ -16,22 +16,22 @@ A proof-of-concept microservices application demonstrating API Gateway patterns 
 ┌─────────────────────────────────────────────┐
 │          API Gateway (Envoy)                │
 │     Port 8080 (API) | Port 9901 (Admin)     │
-│   + JWT Auth + External Authorization      │
+│   + JWT Auth + External Authorization       │
 └────┬────────────────┬────────────────┬──────┘
      │                │                │
      │         ┌──────▼──────┐         │
      │         │   AuthZ     │         │
      │         │  Service    │         │
      │         │  Port 9000  │         │
-     │         │ (Role Lookup│         │
-     │         │from PostgreSQL)       │
+     │         │ (Roles from |         │
+     │         |   Database  │         |
      │         └─────────────┘         │
      │                                 │
-┌────▼──────┐              ┌──────────▼────┐
-│ Keycloak  │              │ Microservices │
-│ IAM/Auth  │              │Customer/Product
-│Port 8180  │              │Ports 8001/8002│
-└───────────┘              └───────────────┘
+┌────▼──────┐               ┌──────────▼─────┐
+│ Keycloak  │               │ Microservices  │
+│ IAM/Auth  │               │Customer/Product|
+│Port 8180  │               │Ports 8001/8002 │
+└───────────┘               └────────────────┘
 ```
 
 ## Features
@@ -46,18 +46,19 @@ A proof-of-concept microservices application demonstrating API Gateway patterns 
 
 ## Documentation
 
-### Essential Guides
-- [Quick Start Guide](QUICK_START.md) - Get running in 5 minutes
-- [Keycloak Setup](docs/setup/keycloak-setup.md) - Authentication configuration
-- [Security Guide](docs/security/security-guide.md) - Security best practices
-- [Quick Reference](docs/development/quick-reference.md) - Common commands
+### Quick Start
+- [5-Minute Setup](QUICK_START.md) - Get running quickly
+- [Developer Guide](docs/developer-guide.md) - Common commands and testing
 
-### By Topic
-- **Setup**: [docs/setup/](docs/setup/) - Installation and configuration guides
-- **Security**: [docs/security/](docs/security/) - Authentication, secrets, production checklist
-- **Development**: [docs/development/](docs/development/) - Developer guides and troubleshooting
-- **API Documentation**: [docs/api/](docs/api/) - Auto-generated API documentation
-- **Reports**: [reports/](reports/) - Project status and verification
+### By Role
+- **UI Developers**: [UI Developer Guide](docs/ui-developer-guide.md) - React authentication
+- **Backend Developers**: [Backend Developer Guide](docs/backend-developer-guide.md) - FastAPI services
+- **DevOps/Security**: [Production Deployment](docs/production-deployment-guide.md) - Deployment checklist
+
+### Essential Topics
+- **Security**: [Security Quick Start](docs/security/security-quick-start.md) | [Detailed Guide](docs/security/security-guide.md)
+- **Architecture**: [System Architecture](docs/architecture/system-architecture.md)
+- **API Docs**: [API Documentation](docs/api/README.md) | [Generate Docs](docs/api/API_GENERATION_GUIDE.md)
 
 [Browse all documentation →](docs/README.md)
 
@@ -85,7 +86,7 @@ docker-compose logs -f
 docker-compose down
 ```
 
-See [Quick Reference](docs/development/quick-reference.md) for more commands.
+See [Developer Guide](docs/developer-guide.md) for more commands.
 
 ## API Endpoints
 
@@ -140,14 +141,12 @@ APIGatewayPOC/
 │   ├── development/      # Developer guides
 │   ├── api/              # Auto-generated API documentation
 │   └── architecture/     # Architecture documentation
+│   └── test/             # Testing related documentation
 │
-├── reports/     # Status and verification reports
-│   ├── project-status.md        # Current project status
-│   └── verification-report.md   # Validation results
-│
-├── services/   # Microservices
-│ ├── gateway/            # Envoy API Gateway
+├── services/             # Microservices
+│   ├── gateway/          # Envoy API Gateway
 │   ├── keycloak/         # Keycloak IAM
+│   ├── authz-service/    # Authorization service (role lookup)
 │   ├── customer-service/ # Customer API
 │   ├── product-service/  # Product API
 │   └── shared/           # Shared utilities
@@ -171,26 +170,28 @@ APIGatewayPOC/
 
 - **API Gateway**: Envoy Proxy v1.28
 - **Authentication**: Keycloak 23.0
-- **Backend**: FastAPI 0.104.1 (Python 3.11)
+- **Backend**: FastAPI 0.104.1 (Python 3.12)
 - **Containerization**: Docker & Docker Compose
 - **Testing**: pytest, requests
 - **Data Validation**: Pydantic 2.5.0
 
 ## Current Status
 
-**Milestone**: Phase 2 - Keycloak Integration ✅ Complete
+This POC demonstrates a production-ready API Gateway with:
+- External authorization service with Redis caching
+- JWT authentication via Keycloak
+- Role-based access control
+- React UI integration via `/auth/me` endpoint
 
-See [Project Status](reports/project-status.md) for details.
+## Future Ideas
 
-## Roadmap
-
-- [x] **Phase 1**: API Gateway & Microservices
-- [x] **Phase 2**: Keycloak Integration & Security
-- [ ] **Phase 3**: Database Integration (PostgreSQL)
-- [ ] **Phase 4**: CRUD Operations
-- [ ] **Phase 5**: Observability (Jaeger, Prometheus)
-- [ ] **Phase 6**: Advanced Features (Rate limiting, caching)
-- [ ] **Phase 7**: CI/CD & Kubernetes
+Potential enhancements for exploration (no commitment):
+- Database integration (PostgreSQL) for persistent storage
+- Full CRUD operations for services
+- Observability stack (distributed tracing, metrics)
+- Advanced gateway features (rate limiting, circuit breakers)
+- Kubernetes deployment for cloud-native orchestration
+- CI/CD pipelines for automated testing and deployment
 
 ## Troubleshooting
 
@@ -203,12 +204,10 @@ docker-compose up -d --build
 **Authentication issues:**
 - Verify Keycloak is running: `docker-compose logs keycloak`
 - Check token hasn't expired (5 min default)
-- See [Security Quick Reference](docs/security/quick-reference.md)
+- See [Security Quick Start](docs/security/security-quick-start.md)
 
 **Need more help?**
-- Check [Quick Reference](docs/development/quick-reference.md)
 - Review [Documentation](docs/README.md)
-- See [Project Status](reports/project-status.md)
 
 ## License
 

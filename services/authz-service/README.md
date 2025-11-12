@@ -1,21 +1,29 @@
 # Authorization Service
 
-External authorization service for role-based access control. This service provides user role lookups based on email addresses extracted from JWT tokens.
+External authorization service for role-based access control with Redis caching.
 
 ## Overview
 
 The authorization service is called by Envoy's `ext_authz` filter for each authenticated request. It:
 1. Extracts user email from the JWT token
-2. Looks up roles from PostgreSQL (currently mocked)
-3. Returns roles in response headers
-4. Envoy uses these roles for RBAC authorization decisions
+2. Checks Redis cache for roles (5-minute TTL)
+3. On cache miss, looks up roles from database (currently mocked)
+4. Caches result in Redis for future requests
+5. Returns roles in response headers for RBAC decisions
 
 ## Architecture
 
 ```
-Envoy → ext_authz → /authz/roles → AuthZ Service → PostgreSQL (mock)
+Envoy → ext_authz → /authz/roles → AuthZ Service → Redis Cache → Database (mock)
                                    ↓
-                                   Returns: x-user-roles header
+                                   Returns: x-user-email, x-user-roles headers
+```
+
+**React UI Integration:**
+```
+React → /auth/me → AuthZ Service → Redis/Database
+                  ↓
+                  Returns: { email, roles } JSON
 ```
 
 ## API Endpoints
@@ -28,11 +36,13 @@ Response: 200 OK
 {
   "status": "healthy",
   "service": "authz-service",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "cache_enabled": true,
+  "cache_healthy": true
 }
 ```
 
-### Role Lookup
+### Role Lookup (Internal - Envoy ext_authz only)
 ```http
 POST /authz/roles
 
@@ -42,9 +52,23 @@ Request Headers:
 
 Response: 200 OK
 Headers:
-  X-User-Email: testuser@example.com
+  x-user-email: testuser@example.com
   x-user-roles: user,customer-manager
 Body: (empty)
+```
+
+### User Info (Public - React UI)
+```http
+GET /authz/me
+
+Request Headers:
+  Authorization: Bearer <jwt-token>
+
+Response: 200 OK
+{
+  "email": "testuser@example.com",
+  "roles": ["user", "customer-manager"]
+}
 ```
 
 ## User Database (Mock)
@@ -68,6 +92,8 @@ Environment variables:
 - `SERVICE_PORT`: Port to listen on (default: 9000)
 - `LOG_LEVEL`: Logging level (default: INFO)
 - `SERVICE_NAME`: Service name for logging (default: authz-service)
+- `REDIS_URL`: Redis connection URL (e.g., redis://redis:6379)
+- `REDIS_TTL`: Cache TTL in seconds (default: 300)
 
 ## Security
 
@@ -109,26 +135,73 @@ docker-compose logs -f authz-service
 docker-compose logs authz-service | grep "testuser@example.com"
 ```
 
-## Phase B: Redis Caching
+## Redis Caching
 
-In Phase B, Redis caching will be added to improve performance:
-- Cache key: `user:roles:{email}`
-- Cache TTL: 300 seconds (5 minutes)
-- Cache hit rate expected: 90-95%
+**Status:** Implemented and Active
 
-See [Implementation Plan](../../docs/development/external-authz-implementation-plan.md) for details.
+- **Cache Key Format:** `user:platform-roles:{email}`
+- **TTL:** 300 seconds (5 minutes)
+- **Strategy:** Cache-aside (check cache, fallback to database)
+- **Expected Hit Rate:** 90-95%
+
+**Cache Behavior:**
+- First request: Cache miss → database lookup → cache result
+- Subsequent requests: Cache hit → return cached roles
+- After 5 minutes: Cache expired → refresh from database
+
+**Monitoring:**
+```bash
+# View cache hits/misses in logs
+docker-compose logs authz-service | grep "Cache HIT\|Cache MISS"
+
+# PowerShell
+docker-compose logs authz-service | Select-String "Cache HIT|Cache MISS"
+```
+
+## Common Tasks
+
+### Add New User Roles
+
+Edit `authz_data_access.py`:
+```python
+USER_ROLES_DB = {
+    "test.user@example.com": ["user"],
+    # Add new user here
+    "newuser@example.com": ["user", "customer-manager"],
+}
+```
+
+Rebuild service:
+```bash
+docker-compose up -d --build authz-service
+```
+
+### Test Authentication Flow
+
+```bash
+# Get token
+TOKEN=$(curl -s -X POST http://localhost:8180/realms/api-gateway-poc/protocol/openid-connect/token \
+  -d "client_id=test-client&username=testuser&password=testpass&grant_type=password" \
+  | jq -r '.access_token')
+
+# Test /auth/me endpoint
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/auth/me
+
+# Test protected API
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/customers
+```
 
 ## Future Enhancements
 
 - [ ] Real PostgreSQL connection
 - [ ] Connection pooling
-- [ ] Redis caching (Phase B)
+- [ ] Role management API (admin)
 - [ ] Prometheus metrics
 - [ ] Distributed tracing
 - [ ] Circuit breaker pattern
 
 ## Related Documentation
 
-- [Implementation Plan](../../docs/development/external-authz-implementation-plan.md)
 - [System Architecture](../../docs/architecture/system-architecture.md)
+- [Authentication & Authorization Flow](../../docs/architecture/authentication-authorization-flow.md)
 - [Security Guide](../../docs/security/security-guide.md)

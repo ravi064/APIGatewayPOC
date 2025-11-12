@@ -15,26 +15,18 @@ Comprehensive security documentation covering:
 - Network security
 - Monitoring and auditing
 
-### [Security Fixes](security-fixes.md)
-Summary of security improvements implemented:
-- Client secret implementation
-- Redirect URI restrictions
-- Service-to-service authentication
-- Migration guide
-- Production checklist
-
-### [Quick Reference](quick-reference.md)
-Quick reference card for:
-- Client secrets
-- Authentication examples
-- Security tests
-- Generating secure secrets
-- Common errors and solutions
+### [Security Quick Start](security-quick-start.md)
+Quick reference for:
+- Authentication flow
+- Getting started in 3 steps
+- Available roles
+- Test users
+- Security best practices
 
 ## Quick Links
 
 **For Developers:**
-- [Get Started with Security](quick-reference.md#authentication-examples)
+- [Get Started with Security](security-quick-start.md#get-started-in-3-steps)
 - [Rotate Client Secrets](../../scripts/README.md#secret-rotation-workflow)
 
 **For Security Team:**

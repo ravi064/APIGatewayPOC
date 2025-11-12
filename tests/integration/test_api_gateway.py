@@ -139,7 +139,7 @@ def test_unauthorized_access_without_token(endpoint, expected_status):
 
 def test_rbac_unverified_user_access():
     """
-    Test RBAC: unverified users should be allowed for customers, forbidden for products.
+    Test RBAC: unverified users should be allowed for customers, and products.
     """
     headers = get_auth_headers("testuser-unvrfd")
     response = requests.get(f"{BASE_URL}/customers", headers=headers)

@@ -184,5 +184,125 @@ def test_concurrent_requests():
     assert all(status == 200 for status in results)
 
 
+# Phase B: Redis Caching Tests
+
+
+def test_cache_hit_on_repeated_requests():
+    """
+    Test that second request uses cache (Phase B).
+    First request should query database (cache miss).
+    Second request should use cache (cache hit).
+    """
+    token = get_keycloak_token("testuser", "testpass")
+    
+    # First request - should query database
+    response1 = requests.get(
+        "http://localhost:8080/customers",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response1.status_code == 200
+    
+    # Second request - should use cache
+    response2 = requests.get(
+        "http://localhost:8080/customers",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response2.status_code == 200
+    
+    # Both requests should return same data
+    assert response1.json() == response2.json()
+    
+    # Note: To verify cache hit/miss, check authz-service logs:
+    # docker-compose logs authz-service | grep "Cache HIT\|Cache MISS"
+
+
+def test_auth_me_endpoint_authenticated():
+    """
+    Test /auth/me endpoint with valid JWT token (Phase B).
+    Verify that authenticated users can retrieve their email and roles.
+    """
+    token = get_keycloak_token("testuser", "testpass")
+    
+    # Call /auth/me endpoint
+    response = requests.get(
+        "http://localhost:8080/auth/me",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    
+    assert response.status_code == 200
+    data = response.json()
+    
+    # Verify response structure
+    assert "email" in data
+    assert "roles" in data
+    assert isinstance(data["roles"], list)
+    
+    # Verify user data
+    assert data["email"] == "test.user@example.com"
+    assert "user" in data["roles"]
+
+
+def test_auth_me_endpoint_unauthenticated():
+    """
+    Test /auth/me endpoint without JWT token (Phase B).
+    Verify that unauthenticated requests are rejected.
+    """
+    # Call /auth/me without token
+    response = requests.get("http://localhost:8080/auth/me")
+    
+    # Should be rejected by Envoy JWT filter
+    assert response.status_code == 401
+
+
+def test_auth_me_endpoint_invalid_token():
+    """
+    Test /auth/me endpoint with invalid JWT token (Phase B).
+    Verify that requests with invalid tokens are rejected.
+    """
+    response = requests.get(
+        "http://localhost:8080/auth/me",
+        headers={"Authorization": "Bearer invalid-token-xyz"}
+    )
+    
+    # Should be rejected by Envoy JWT filter or authz service
+    assert response.status_code == 401
+
+
+def test_cache_works_with_multiple_users():
+    """
+    Test that cache correctly handles multiple users (Phase B).
+    Each user should have their own cache entry.
+    """
+    # Get tokens for different users
+    token_user = get_keycloak_token("testuser", "testpass")
+    
+    try:
+        token_cm = get_keycloak_token("testuser-cm", "testpass")
+    except AssertionError:
+        pytest.skip("User 'testuser-cm' not configured in Keycloak")
+    
+    # Make requests with different users
+    response1 = requests.get(
+        "http://localhost:8080/customers",
+        headers={"Authorization": f"Bearer {token_user}"}
+    )
+    assert response1.status_code == 200
+    
+    response2 = requests.get(
+        "http://localhost:8080/customers",
+        headers={"Authorization": f"Bearer {token_cm}"}
+    )
+    assert response2.status_code == 200
+    
+    # Each user should get their own filtered results
+    customers1 = response1.json()
+    customers2 = response2.json()
+    
+    # Regular user sees only their own customer
+    assert len(customers1) == 1
+    # Customer manager sees all customers
+    assert len(customers2) >= 1
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

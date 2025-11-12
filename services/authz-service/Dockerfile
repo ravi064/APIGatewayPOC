@@ -14,8 +14,13 @@ COPY shared /app/shared
 # Copy application code
 COPY authz-service/ .
 
-# Expose port (documentation only - not exposed in docker-compose for security)
+# Set default service port and expose it (for documentation)
+ENV SERVICE_PORT=9000
 EXPOSE 9000
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9000"]
+# Copy entrypoint script
+COPY authz-service/start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Run the application using entrypoint script (JSON form for proper signal handling)
+CMD ["/app/start.sh"]

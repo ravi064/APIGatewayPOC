@@ -98,7 +98,7 @@ class TestCustomerService:
         ("testuser-pm", 999),
     ])
     def test_nonexistent_customer_access(self, username, customer_id):
-        """Test that all roles get 403 for non-existent customer except customer-manager"""
+        """Test that all roles except customer-manager get 403 for non-existent customer"""
         headers = get_auth_headers(username)
         response = requests.get(f"{GATEWAY_BASE_URL}/customers/{customer_id}", headers=headers)
         assert response.status_code == 403
@@ -106,9 +106,9 @@ class TestCustomerService:
         assert "Access denied" in error["detail"]
 
     def test_customer_manager_access_nonexistent_customer(self):
-        """Test that customer-manager gets 403 for non-existent customer"""
+        """Test that customer-manager gets 404 for non-existent customer"""
         headers = get_auth_headers("testuser-cm")
         response = requests.get(f"{GATEWAY_BASE_URL}/customers/999", headers=headers)
-        assert response.status_code == 403
+        assert response.status_code == 404
         error = response.json()
-        assert "Access denied" in error["detail"]
+        assert "Customer not found" in error["detail"]
