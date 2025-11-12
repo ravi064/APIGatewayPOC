@@ -202,6 +202,6 @@ curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/customers
 
 ## Related Documentation
 
-- [Implementation Plan](../../docs/development/external-authz-implementation-plan.md)
 - [System Architecture](../../docs/architecture/system-architecture.md)
+- [Authentication & Authorization Flow](../../docs/architecture/authentication-authorization-flow.md)
 - [Security Guide](../../docs/security/security-guide.md)

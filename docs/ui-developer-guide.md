@@ -305,9 +305,9 @@ test('shows customer management for customer-manager role', async () => {
 
 ## Additional Resources
 
-- [React Auth Integration](./development/react-auth-integration.md) - Detailed examples
-- [Security Quick Start](./security/security-quick-start.md) - Authentication basics
-- [API Documentation](./api/README.md) - Full API reference
+- [React Auth Integration](development/react-auth-integration.md) - Detailed examples
+- [Security Quick Start](security/security-quick-start.md) - Authentication basics
+- [API Documentation](api/README.md) - Full API reference
 
 ## Quick Reference
 
@@ -334,4 +334,4 @@ window.location.href = '/login';
 
 ---
 
-**Need help?** Check [React Auth Integration](./development/react-auth-integration.md) for complete examples.
+**Need help?** Check [React Auth Integration](development/react-auth-integration.md) for complete examples.

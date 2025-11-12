@@ -385,7 +385,6 @@ docker-compose up -d --build
 ## Additional Resources
 
 - [Security Guide](../security/security-guide.md) - Complete security documentation
-- [services/keycloak/README.md](services/keycloak/README.md) - Keycloak service details
 - [Keycloak Documentation](https://www.keycloak.org/documentation)
 - [OAuth2.0 RFC](https://tools.ietf.org/html/rfc6749)
 - [OpenID Connect Specification](https://openid.net/connect/)

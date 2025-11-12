@@ -204,10 +204,9 @@ docker-compose up -d --build
 **Authentication issues:**
 - Verify Keycloak is running: `docker-compose logs keycloak`
 - Check token hasn't expired (5 min default)
-- See [Security Quick Reference](docs/security/quick-reference.md)
+- See [Security Quick Start](docs/security/security-quick-start.md)
 
 **Need more help?**
-- Check [Quick Reference](docs/development/quick-reference.md)
 - Review [Documentation](docs/README.md)
 
 ## License

@@ -406,10 +406,6 @@ curl -H "x-user-email: test@example.com" \
      http://localhost:8003/endpoint
 ```
 
-### Interactive Docs
-
-Visit http://localhost:8003/docs for Swagger UI.
-
 ## Additional Resources
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
