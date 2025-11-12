@@ -18,7 +18,7 @@ Complete documentation for the API Gateway Proof of Concept.
 
 ### Backend Developers (FastAPI)
 - [Backend Developer Guide](backend-developer-guide.md) - FastAPI service development
-- [Developer Guide](DEVELOPER_GUIDE.md) - Common commands and testing
+- [Developer Guide](developer-guide.md) - Common commands and testing
 - [AuthZ Service](../services/authz-service/README.md) - External authorization
 - [Shared Utilities](../services/shared/) - Common code
 
@@ -29,7 +29,7 @@ Complete documentation for the API Gateway Proof of Concept.
 - [Keycloak Setup](setup/keycloak-setup.md) - Authentication configuration
 
 ### All Developers
-- [Developer Guide](DEVELOPER_GUIDE.md) - Common commands, testing, troubleshooting
+- [Developer Guide](developer-guide.md) - Common commands, testing, troubleshooting
 - [API Generation](api/API_GENERATION_GUIDE.md) - Generate API documentation
 - [Scripts Documentation](../scripts/README.md) - Utility scripts
 
@@ -39,7 +39,7 @@ Complete documentation for the API Gateway Proof of Concept.
 - [UI Developer Guide](ui-developer-guide.md) - React integration
 - [Backend Developer Guide](backend-developer-guide.md) - FastAPI services
 - [Production Deployment](production-deployment-guide.md) - Deployment guide
-- [Developer Guide](DEVELOPER_GUIDE.md) - Commands and testing
+- [Developer Guide](developer-guide.md) - Commands and testing
 
 ### Security
 - [Security Quick Start](security/security-quick-start.md) - Concise security guide
@@ -66,14 +66,14 @@ Complete documentation for the API Gateway Proof of Concept.
 
 **Get Started:**
 - [5-minute setup](../QUICK_START.md)
-- [Start services](DEVELOPER_GUIDE.md#quick-start)
+- [Start services](developer-guide.md#quick-start)
 - [Get access token](security/security-quick-start.md#get-started-in-3-steps)
 
 **By Task:**
 - [Add UI authentication](ui-developer-guide.md#quick-start)
 - [Create new service](backend-developer-guide.md#quick-start)
 - [Deploy to production](production-deployment-guide.md#pre-deployment-checklist)
-- [Run tests](DEVELOPER_GUIDE.md#testing)
+- [Run tests](developer-guide.md#testing)
 - [Generate API docs](api/API_GENERATION_GUIDE.md#quick-start)
 - [Rotate secrets](production-deployment-guide.md#secret-management)
 
@@ -92,4 +92,4 @@ Complete documentation for the API Gateway Proof of Concept.
 
 ---
 
-**Need help?** Check the [Developer Guide](DEVELOPER_GUIDE.md) for common commands and troubleshooting.
+**Need help?** Check the [Developer Guide](developer-guide.md) for common commands and troubleshooting.

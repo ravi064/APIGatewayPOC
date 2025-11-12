@@ -276,4 +276,4 @@ sequenceDiagram
 - [Security Guide](../security/security-guide.md)
 - [Authorization Service README](../../services/authz-service/README.md)
 - [Keycloak Setup](../setup/keycloak-setup.md)
-- [Developer Guide](../DEVELOPER_GUIDE.md)
+- [Developer Guide](../developer-guide.md)
