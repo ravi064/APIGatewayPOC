@@ -138,6 +138,7 @@ pytest tests/test_customer_service.py::test_get_all_customers -v
 ```
 
 ### Manual API Testing
+[Get JWT Token](#get-jwt-token)
 
 ```bash
 # Health check for customer (should return JWT is missing message)
@@ -147,7 +148,6 @@ curl http://localhost:8080/customers/health
 curl http://localhost:8080/products/health
 
 # Get all customers (requires JWT)
-[Get JWT Token](#get-jwt-token)
 curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/customers
 
 # Get specific customer (requires JWT)
