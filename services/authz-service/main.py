@@ -15,7 +15,7 @@ import base64
 from typing import Optional
 sys.path.append('/app')
 
-from authz_data_access import get_user_roles, get_cache_health, UserNotFoundException
+from authz_data_access import get_user_roles, UserNotFoundException
 from shared.common import setup_logging, create_health_response
 
 # Setup logging
