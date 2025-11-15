@@ -1,0 +1,12 @@
+root = true
+
+# default for all files
+[*]
+charset = utf-8
+end_of_line = lf
+
+# explicit for markdown files (redundant but explicit)
+[*.md]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = false
