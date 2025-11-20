@@ -15,7 +15,7 @@ import base64
 from typing import Optional
 sys.path.append('/app')
 
-from authz_data_access import get_user_roles, UserNotFoundException
+from authz_data_access import AuthDataAccess, UserNotFoundException
 from shared.common import setup_logging, create_health_response
 
 # Setup logging
@@ -27,6 +27,10 @@ app = FastAPI(
     description="External authorization service for role lookup",
     version="1.0.0"
 )
+
+# Create data access instance (allows dependency injection in future)
+auth_data = AuthDataAccess()
+
 
 def decode_email_from_jwt(token: str) -> str:
     """
@@ -130,7 +134,7 @@ def lookup_user_roles(email: str, request_id: Optional[str] = None) -> list:
         List of role names (defaults to ['unverified-user'] if user not found)
     """
     try:
-        roles = get_user_roles(email)
+        roles = auth_data.get_user_roles(email)
         if request_id:
             logger.info(f"[{request_id}] Roles retrieved for {email}: {roles}")
         return roles

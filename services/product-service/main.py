@@ -1,4 +1,3 @@
-
 # Product Service: All users, including 'guest', have access to product information.
 # There are no role-based restrictions on any endpoint in this service.
 # User info is only used for logging and future fine-grained authorization if needed.
@@ -11,7 +10,7 @@ sys.path.append('/app')
 
 from models.product import ProductResponse
 from shared.common import setup_logging, create_health_response
-from shared.auth import get_current_user_from_headers, JWTPayload
+from shared.auth import get_current_user, UserInfo
 from product_data_access import product_data_access
 
 # Setup logging
@@ -30,7 +29,7 @@ def health_check():
     return create_health_response("product-service")
 
 @app.get("/products", response_model=List[ProductResponse])
-def get_products(current_user: JWTPayload = Depends(get_current_user_from_headers)):
+def get_products(current_user: UserInfo = Depends(get_current_user)):
     """
     Get all products
 
@@ -47,7 +46,7 @@ def get_products(current_user: JWTPayload = Depends(get_current_user_from_header
     return products
 
 @app.get("/products/{product_id}", response_model=ProductResponse)
-def get_product(product_id: int, current_user: JWTPayload = Depends(get_current_user_from_headers)):
+def get_product(product_id: int, current_user: UserInfo = Depends(get_current_user)):
     """
     Get a specific product by ID
 
@@ -68,7 +67,7 @@ def get_product(product_id: int, current_user: JWTPayload = Depends(get_current_
     return product
 
 @app.get("/products/category/{category}", response_model=List[ProductResponse])
-def get_products_by_category(category: str, current_user: JWTPayload = Depends(get_current_user_from_headers)):
+def get_products_by_category(category: str, current_user: UserInfo = Depends(get_current_user)):
     """
     Get products by category
 

@@ -36,15 +36,15 @@ class PlatformRolesCache:
         """
         return f"user:platform-roles:{email.lower()}"
     
-    def get(self, email: str) -> Optional[List[str]]:
+    def get_roles(self, email: str) -> Optional[List[str]]:
         """
-        Get roles from cache.
+        Get cached roles for a user.
         
         Args:
             email: User email address
         
         Returns:
-            List of roles if found, None if cache miss
+            List of roles if found in cache, None if cache miss
         """
         key = self._make_key(email)
         try:
@@ -60,16 +60,16 @@ class PlatformRolesCache:
             logger.error(f"Redis error on get for {email}: {e}")
             return None  # Fail gracefully - proceed without cache
     
-    def set(self, email: str, roles: List[str]) -> bool:
+    def set_roles(self, email: str, roles: List[str]) -> bool:
         """
-        Set roles in cache with TTL.
+        Cache roles for a user with TTL.
         
         Args:
             email: User email address
-            roles: List of role names
+            roles: List of role names to cache
         
         Returns:
-            True if successful, False otherwise
+            True if successfully cached, False otherwise
         """
         key = self._make_key(email)
         try:
@@ -81,15 +81,15 @@ class PlatformRolesCache:
             logger.error(f"Redis error on set for {email}: {e}")
             return False  # Fail gracefully
     
-    def invalidate(self, email: str) -> bool:
+    def invalidate_roles(self, email: str) -> bool:
         """
-        Invalidate cache for user (useful for testing and admin operations).
+        Remove cached roles for a user (useful for testing and admin operations).
         
         Args:
             email: User email address
         
         Returns:
-            True if key existed and was deleted, False otherwise
+            True if cache entry existed and was deleted, False otherwise
         """
         key = self._make_key(email)
         try:
@@ -118,7 +118,7 @@ class PlatformRolesCache:
             return False
 
 
-def get_cache_instance() -> Optional[PlatformRolesCache]:
+def get_platform_roles_cache_instance() -> Optional[PlatformRolesCache]:
     """
     Get a cache instance if Redis is configured, otherwise return None.
     
